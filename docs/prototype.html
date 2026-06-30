@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Caio — Frontend Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root, [data-theme="light"]{
+    --paper: oklch(0.972 0.005 85); --surface: oklch(0.990 0.003 85); --surface-sunk: oklch(0.950 0.006 80);
+    --ink: oklch(0.26 0.012 60); --ink-muted: oklch(0.50 0.012 60); --ink-faint: oklch(0.66 0.010 60);
+    --line: oklch(0.88 0.006 70);
+    --shu: oklch(0.585 0.165 36); --shu-strong: oklch(0.52 0.17 36); --shu-soft: oklch(0.94 0.04 36);
+    --ai: oklch(0.42 0.09 252); --on-shu: oklch(0.99 0.005 85);
+    color-scheme: light;
+  }
+  [data-theme="dark"]{
+    --paper: oklch(0.235 0.012 55); --surface: oklch(0.275 0.012 55); --surface-sunk: oklch(0.205 0.010 55);
+    --ink: oklch(0.92 0.012 80); --ink-muted: oklch(0.70 0.012 70); --ink-faint: oklch(0.55 0.012 60);
+    --line: oklch(0.36 0.012 55);
+    --shu: oklch(0.66 0.15 38); --shu-strong: oklch(0.72 0.14 38); --shu-soft: oklch(0.32 0.06 36);
+    --ai: oklch(0.62 0.10 250); --on-shu: oklch(0.18 0.01 55);
+    color-scheme: dark;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Zen Kaku Gothic New", system-ui, sans-serif; line-height:1.7;
+    font-size:clamp(1rem,0.95rem+0.25vw,1.10rem); -webkit-font-smoothing:antialiased;
+    transition:background .35s ease, color .35s ease;
+  }
+  h1,h2,h3{ font-family:"Zen Old Mincho", Georgia, serif; line-height:1.18; margin:0; font-weight:700; }
+  ::selection{ background:color-mix(in oklch, var(--shu) 26%, transparent); }
+
+  .wrap{ max-width:1180px; margin-inline:auto; padding-inline:clamp(22px,5vw,56px); }
+
+  .band{ padding-block:clamp(72px,11vw,160px); }
+
+  .eyebrow{ font-family:"JetBrains Mono",monospace; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-faint); }
+  .lede{ color:var(--ink-muted); max-width:70%; }
+
+  /* seal — the one non-Latin mark on the site */
+  .seal{ display:inline-grid; place-items:center; background:var(--shu); color:var(--on-shu);
+    font-family:"Zen Old Mincho",serif; font-weight:700; border-radius:8px; line-height:1;
+    box-shadow: inset 0 0 0 1.5px color-mix(in oklch, var(--on-shu) 22%, transparent); user-select:none; }
+  .seal.sm{ width:30px; height:30px; font-size:17px; }
+  .seal.lg{ width:78px; height:78px; font-size:46px; }
+  @media (prefers-reduced-motion: no-preference){
+    .seal.stamp{ animation:stamp .42s cubic-bezier(.34,1.4,.5,1) both; }
+    @keyframes stamp{ 0%{ opacity:0; transform:scale(1.18) rotate(-4deg); } 100%{ opacity:1; transform:none; } }
+  }
+
+  /* links + buttons */
+  .link{ color:var(--ink); text-decoration:none; background-image:linear-gradient(var(--shu),var(--shu));
+    background-size:0% 1px; background-position:0 100%; background-repeat:no-repeat; transition:background-size .14s cubic-bezier(.22,1,.36,1); }
+  .link:hover, .link:focus-visible{ background-size:100% 1px; }
+  @media (prefers-reduced-motion: reduce){ .link{ background-size:100% 1px; } }
+  :where(a,button,input,[tabindex]):focus-visible{ outline:2px solid var(--shu); outline-offset:3px; }
+
+  .btn{ font-family:"Zen Kaku Gothic New"; font-weight:500; font-size:.92rem; text-decoration:none; display:inline-flex; align-items:center; gap:.6rem; padding:.65rem 1.25rem; border:1px solid var(--ink); color:var(--ink); border-radius:4px; transition:background .14s, color .14s; }
+  .btn:hover{ background:var(--ink); color:var(--paper); }
+  .btn.fill{ background:var(--shu); border-color:var(--shu); color:var(--on-shu); }
+  .btn.fill:hover{ background:var(--shu-strong); border-color:var(--shu-strong); }
+
+  /* header */
+  header.site{ position:sticky; top:0; z-index:50; background:color-mix(in oklch,var(--paper) 88%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+  .nav{ display:flex; align-items:center; justify-content:space-between; height:68px; }
+  .brand{ display:flex; align-items:center; gap:.7rem; text-decoration:none; color:var(--ink); }
+  .brand .name{ font-family:"Zen Old Mincho",serif; font-weight:700; font-size:1.12rem; letter-spacing:.02em; }
+  .nav nav{ display:flex; gap:1.6rem; align-items:center; }
+  .nav nav a{ color:var(--ink-muted); text-decoration:none; font-size:.88rem; font-family:"JetBrains Mono",monospace; letter-spacing:.04em; }
+  .nav nav a:hover{ color:var(--ink); }
+  .toggle{ cursor:pointer; background:transparent; border:1px solid var(--line); color:var(--ink-muted); border-radius:4px; padding:.4rem .7rem; font-family:"JetBrains Mono",monospace; font-size:.72rem; }
+  .toggle:hover{ color:var(--ink); border-color:var(--ink-faint); }
+  @media (max-width:760px){ .nav nav{ display:none; } }
+
+  /* hero — text left, photo right */
+  .hero{
+    display:grid;
+    grid-template-columns:1fr clamp(200px,28vw,320px);
+    gap:clamp(40px,7vw,96px);
+    align-items:center;
+    padding-block:clamp(80px,10vw,140px);
+  }
+  .hero .row1{ display:flex; align-items:center; gap:1.1rem; margin-bottom:1.6rem; }
+  .hero h1{ font-size:clamp(2.5rem,1.9rem+2.6vw,4.1rem); }
+  .hero .lead{ font-family:"Zen Kaku Gothic New"; color:var(--ink-muted); font-size:clamp(1.1rem,1.0rem+.5vw,1.35rem); max-width:52ch; line-height:1.75; }
+  .hero .cta{ display:flex; gap:1.4rem; flex-wrap:wrap; align-items:center; margin-top:2.4rem; }
+  .hero .meta{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:3rem; align-items:flex-start; }
+
+  /* profile photo slot */
+  .hero-photo{
+    position:relative;
+    aspect-ratio:1;
+    border:1px solid var(--line);
+    background:var(--surface-sunk);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--ink-faint);
+  }
+  .hero-photo .photo-hint{
+    font-family:"JetBrains Mono",monospace;
+    font-size:.68rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    text-align:center;
+    padding-inline:1rem;
+  }
+  .hero-photo .seal-corner{
+    position:absolute;
+    bottom:14px;
+    right:14px;
+  }
+
+  @media (max-width:760px){
+    .hero{ grid-template-columns:1fr; }
+    .hero-photo{ order:-1; max-width:200px; }
+  }
+
+  .chip{ font-family:"JetBrains Mono",monospace; font-size:.72rem; color:var(--ink-muted); border:1px solid var(--line); border-radius:9999px; padding:.32rem .8rem; }
+  .chip.lead{ border-color:var(--shu); color:var(--shu-strong); }
+
+  /* about */
+  .about h2{ font-size:clamp(1.7rem,1.4rem+1.1vw,2.3rem); max-width:60%; margin-top:.6rem; }
+  .about p{ color:var(--ink-muted); max-width:70%; margin-top:1.2rem; }
+  .tokens{ display:flex; align-items:center; gap:1rem; flex-wrap:wrap; margin-top:2.4rem; padding-top:1.6rem; border-top:1px solid var(--line); }
+  .tokens .lbl{ font-family:"JetBrains Mono",monospace; font-size:.72rem; color:var(--ink-faint); letter-spacing:.06em; }
+  .sw{ width:26px; height:26px; border-radius:9999px; border:none; cursor:pointer; box-shadow:0 0 0 1px var(--line); }
+  .sw[aria-pressed="true"]{ outline:2px solid var(--ink); outline-offset:2px; }
+  .readout{ font-family:"JetBrains Mono",monospace; font-size:.72rem; color:var(--ink-faint); }
+
+  /* timeline */
+  .tl{ margin-top:1rem; }
+  .tl-row{ display:grid; grid-template-columns:140px 1fr; gap:1.6rem; padding:1.6rem 0; border-bottom:1px solid var(--line); }
+  .tl-row:first-child{ border-top:1px solid var(--line); }
+  .tl-date{ font-family:"JetBrains Mono",monospace; font-size:.78rem; color:var(--ink-faint); padding-top:.35rem; }
+  .tl-role{ font-family:"Zen Old Mincho",serif; font-weight:700; font-size:1.2rem; }
+  .tl-co{ color:var(--ink-muted); font-size:.88rem; margin-top:.15rem; }
+  .tl-row p{ margin:.6rem 0 0; color:var(--ink-muted); font-size:.95rem; max-width:58ch; }
+  @media (max-width:560px){ .tl-row{ grid-template-columns:1fr; gap:.3rem; } }
+
+  /* works grid */
+  .h2lead{ font-size:clamp(1.7rem,1.4rem+1.1vw,2.3rem); max-width:70%; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(248px,1fr)); gap:0; margin-top:2.2rem; border-top:1px solid var(--line); border-left:1px solid var(--line); }
+  .item{ border-right:1px solid var(--line); border-bottom:1px solid var(--line); padding:1.5rem; min-height:178px; display:flex; flex-direction:column; gap:.5rem; text-decoration:none; color:inherit; position:relative; transition:background .18s; }
+  .item:hover{ background:var(--surface); }
+  .item::before{ content:""; position:absolute; left:0; right:0; top:0; height:2px; background:var(--shu); transform:scaleX(0); transform-origin:left; transition:transform .22s cubic-bezier(.22,1,.36,1); }
+  .item:hover::before{ transform:scaleX(1); }
+  .item .fw{ font-family:"JetBrains Mono",monospace; font-size:.64rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); }
+  .item h3{ font-size:1.12rem; }
+  .item p{ margin:0; color:var(--ink-muted); font-size:.88rem; }
+  .item .go{ margin-top:auto; font-family:"JetBrains Mono",monospace; font-size:.72rem; color:var(--shu-strong); }
+
+  /* blog list */
+  .posts{ margin-top:1.4rem; border-top:1px solid var(--line); }
+  .post{ display:grid; grid-template-columns:96px 1fr auto; gap:1.4rem; align-items:baseline; padding:1.2rem 0; border-bottom:1px solid var(--line); text-decoration:none; color:inherit; }
+  .post:hover .pt{ color:var(--shu-strong); }
+  .pd{ font-family:"JetBrains Mono",monospace; font-size:.76rem; color:var(--ink-faint); }
+  .pt{ font-family:"Zen Old Mincho",serif; font-weight:700; font-size:1.08rem; transition:color .14s; }
+  .ps{ font-family:"JetBrains Mono",monospace; font-size:.68rem; color:var(--ink-faint); white-space:nowrap; }
+  @media (max-width:560px){ .post{ grid-template-columns:1fr; gap:.2rem; } .ps{ display:none; } }
+
+  /* colophon */
+  .colophon-box{ border:1px solid var(--line); padding:clamp(20px,4vw,40px); max-width:520px; }
+  .colophon-box dl{ margin:0; display:grid; grid-template-columns:auto 1fr; gap:.8rem 1.6rem; font-family:"JetBrains Mono",monospace; font-size:.82rem; }
+  .colophon-box dt{ color:var(--ink-faint); }
+  .colophon-box dd{ margin:0; color:var(--ink); }
+  .colophon-box .seal-line{ display:flex; justify-content:flex-end; margin-top:1.6rem; padding-top:1.2rem; border-top:1px solid var(--line); }
+
+  hr.rule{ border:none; border-top:1px solid var(--line); margin:0; }
+
+  footer.site{ border-top:1px solid var(--line); }
+  footer .row{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; align-items:center; padding-block:2.4rem; color:var(--ink-muted); font-size:.86rem; }
+  footer .row nav{ display:flex; gap:1.4rem; }
+  footer a{ color:var(--ink-muted); text-decoration:none; font-family:"JetBrains Mono",monospace; font-size:.8rem; }
+  footer a:hover{ color:var(--ink); }
+
+  @media (prefers-reduced-motion: no-preference){
+    .fade{ opacity:0; transform:translateY(12px); animation:up .6s cubic-bezier(.22,1,.36,1) forwards; }
+    .d1{ animation-delay:.1s } .d2{ animation-delay:.22s } .d3{ animation-delay:.34s }
+    @keyframes up{ to{ opacity:1; transform:none; } }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap nav">
+    <a class="brand" href="#">
+      <span class="seal sm" aria-label="Caio">カ</span>
+      <span class="name">Caio</span>
+    </a>
+    <nav aria-label="Primary">
+      <a href="#about">about</a>
+      <a href="#work">experience</a>
+      <a href="#works">playground</a>
+      <a href="#blog">blog</a>
+    </nav>
+    <button class="toggle" id="themeBtn" aria-pressed="false">light / dark</button>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="wrap hero">
+    <div class="hero-text">
+      <div class="row1 fade d1">
+        <span class="seal lg stamp" id="seal" aria-label="Caio">カ</span>
+        <p class="eyebrow">Frontend Engineer<br>8 years · Goiânia, BR</p>
+      </div>
+      <h1 class="fade d1">Interfaces with room to breathe.</h1>
+      <p class="lead fade d2">I build frontends that are a pleasure to use and a pleasure to maintain, careful with the experience on screen, careful with the architecture behind it. Vue &amp; Nuxt are my home; I'm learning React &amp; Next in the open.</p>
+      <div class="cta fade d2">
+        <a class="btn fill" href="#works">See the work</a>
+        <a class="link" href="#work" style="font-family:'JetBrains Mono',monospace;font-size:.85rem;">experience &amp; timeline →</a>
+      </div>
+      <div class="meta fade d3">
+        <span class="chip lead">Vue · Nuxt</span>
+        <span class="chip">TypeScript</span>
+        <span class="chip">Tailwind</span>
+        <span class="chip">Usability / a11y</span>
+        <span class="chip">Architecture · refactoring</span>
+        <span class="chip">React · Next (learning)</span>
+      </div>
+    </div>
+    <div class="hero-photo fade d2" aria-hidden="true">
+      <span class="photo-hint">profile photo</span>
+      <div class="seal-corner"><span class="seal sm" aria-hidden="true">カ</span></div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- ABOUT -->
+  <section class="band about" id="about">
+    <div class="wrap">
+      <p class="eyebrow">About</p>
+      <h2>Eight years turning requirements into interfaces people actually enjoy.</h2>
+      <p>Mostly frontend, comfortable across the stack. I obsess over the small things — focus states, empty states, the moment a form goes wrong — and I keep refactoring toward structures that make the next change easy. This whole site is composed from a design-token system; that isn't decoration, it's how I think about UI.</p>
+      <div class="tokens" role="group" aria-label="Recolor the accent (design-token demo)">
+        <span class="lbl">tokens are live →</span>
+        <button class="sw" style="background:oklch(0.585 0.165 36)" aria-pressed="true" data-l="0.585" data-c="0.165" data-h="36" data-dl="0.66" data-ph="55" title="vermilion (default)"></button>
+        <button class="sw" style="background:oklch(0.42 0.09 252)" aria-pressed="false" data-l="0.42" data-c="0.09" data-h="252" data-dl="0.62" data-ph="240" title="indigo"></button>
+        <button class="sw" style="background:oklch(0.45 0.05 150)" aria-pressed="false" data-l="0.45" data-c="0.06" data-h="150" data-dl="0.62" data-ph="145" title="moss"></button>
+        <span class="readout" id="readout">--shu: oklch(0.585 0.165 36)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="band" id="work" style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow">Experience</p>
+      <h2 class="h2lead" style="margin-top:.6rem">A typed timeline — chronology that carries meaning.</h2>
+      <p class="lede" style="margin-top:.9rem">Placeholder entries; fill from your CV.</p>
+      <div class="tl">
+        <div class="tl-row">
+          <div class="tl-date">2023 — Present</div>
+          <div>
+            <div class="tl-role">Senior Frontend Engineer</div>
+            <div class="tl-co">Product studio · Vue · Nuxt · TypeScript</div>
+            <p>Led the component system and an accessibility pass for the flagship app; cut first-load JS and moved Core Web Vitals into the green.</p>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2021 — 2023</div>
+          <div>
+            <div class="tl-role">Frontend Engineer</div>
+            <div class="tl-co">Fintech platform · fullstack-adjacent</div>
+            <p>Owned the dashboard UX end to end; introduced a feature-based architecture that made onboarding new engineers measurably faster.</p>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date">2018 — 2021</div>
+          <div>
+            <div class="tl-role">Web Developer</div>
+            <div class="tl-co">Design-led agency · many clients</div>
+            <p>Shipped marketing sites and web apps; where the usability obsession and the refactoring habit took root.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKS / PLAYGROUND -->
+  <section class="band" id="works" style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow">Playground</p>
+      <h2 class="h2lead" style="margin-top:.6rem">Small, finished things you can poke at.</h2>
+      <p class="lede" style="margin-top:.9rem">Each is an isolated island — some Vue, some React — with a short note on how it's built. Proof, not promises.</p>
+      <div class="grid">
+        <a class="item" href="#works"><span class="fw">React</span><h3>Design Token Studio</h3><p>Edit this site's tokens live; export the CSS.</p><span class="go">open →</span></a>
+        <a class="item" href="#works"><span class="fw">Vue</span><h3>Contrast &amp; A11y Checker</h3><p>Two colors → the WCAG verdict and a fix.</p><span class="go">open →</span></a>
+        <a class="item" href="#works"><span class="fw">Vue</span><h3>Command Palette ⌘K</h3><p>Keyboard-first, fuzzy navigation.</p><span class="go">open →</span></a>
+        <a class="item" href="#works"><span class="fw">Vue</span><h3>The states quartet</h3><p>Loading · empty · error · success, done right.</p><span class="go">open →</span></a>
+        <a class="item" href="#works"><span class="fw">React</span><h3>Virtualized table</h3><p>50k rows, sort &amp; filter, zero jank.</p><span class="go">open →</span></a>
+        <a class="item" href="#works"><span class="fw">Vue ↔ React</span><h3>Same widget, both stacks</h3><p>The identical component, side by side.</p><span class="go">open →</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOG -->
+  <section class="band" id="blog" style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow">Blog · daily</p>
+      <h2 class="h2lead" style="margin-top:.6rem">One idea about frontend, every day.</h2>
+      <p class="lede" style="margin-top:.9rem">Short and shippable, organized into series so the cadence holds.</p>
+      <div class="posts">
+        <a class="post" href="#blog"><span class="pd">06 / 30</span><span class="pt">The four states every async UI owes its users</span><span class="ps">UX</span></a>
+        <a class="post" href="#blog"><span class="pd">06 / 29</span><span class="pt">useEffect through Vue eyes: the dependency trap</span><span class="ps">React in public</span></a>
+        <a class="post" href="#blog"><span class="pd">06 / 28</span><span class="pt">Feature-based vs layer-based folders (and when each breaks)</span><span class="ps">Architecture</span></a>
+        <a class="post" href="#blog"><span class="pd">06 / 27</span><span class="pt">Discriminated unions kill impossible UI states</span><span class="ps">TypeScript</span></a>
+        <a class="post" href="#blog"><span class="pd">06 / 26</span><span class="pt">Tailwind v4's CSS-first config: what changed</span><span class="ps">Modern CSS</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLOPHON -->
+  <section class="band" id="colophon" style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow">Colophon</p>
+      <h2 class="h2lead" style="margin-top:.6rem">How this site is made.</h2>
+      <p class="lede" style="margin-top:.9rem">The stack is part of the portfolio — a record of craft, tool choices, and values.</p>
+      <div class="colophon-box" style="margin-top:2rem">
+        <dl>
+          <dt>build</dt><dd>Astro 6 · Vue + React islands</dd>
+          <dt>lang</dt><dd>TypeScript (strict)</dd>
+          <dt>style</dt><dd>Tailwind v4 · CSS-variable tokens</dd>
+          <dt>content</dt><dd>Sanity — publish with no deploy</dd>
+          <dt>host</dt><dd>Cloudflare Pages · ~$0</dd>
+          <dt>perf</dt><dd>~0 KB JS on content · Lighthouse 100</dd>
+        </dl>
+        <div class="seal-line"><span class="seal sm" aria-hidden="true">カ</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap row">
+    <div>© 2026 Caio · Frontend Engineer · Goiânia</div>
+    <nav>
+      <a href="#" class="link">GitHub</a>
+      <a href="#" class="link">LinkedIn</a>
+      <a href="#" class="link">RSS</a>
+      <a href="#" class="link">CV ↓</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  const root = document.documentElement;
+  const btn = document.getElementById('themeBtn');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  setTheme(prefersDark ? 'dark' : 'light');
+
+  function setTheme(t){
+    root.setAttribute('data-theme', t);
+    btn.setAttribute('aria-pressed', String(t==='dark'));
+    const active = document.querySelector('.sw[aria-pressed="true"]');
+    if(active) applyAccent(active, t==='dark');
+  }
+
+  function applyAccent(sw, dark){
+    const {l,c,h,dl,ph} = sw.dataset;
+    const L = dark ? dl : l;
+    root.style.setProperty('--shu', `oklch(${L} ${c} ${h})`);
+    root.style.setProperty('--shu-strong', `oklch(${(parseFloat(L)+(dark?0.07:-0.06)).toFixed(3)} ${c} ${h})`);
+    if(dark){
+      const phue = ph || h;
+      root.style.setProperty('--paper', `oklch(0.235 0.008 ${phue})`);
+      root.style.setProperty('--surface', `oklch(0.275 0.008 ${phue})`);
+      root.style.setProperty('--surface-sunk', `oklch(0.205 0.007 ${phue})`);
+      root.style.setProperty('--line', `oklch(0.36 0.010 ${phue})`);
+    } else {
+      root.style.removeProperty('--paper');
+      root.style.removeProperty('--surface');
+      root.style.removeProperty('--surface-sunk');
+      root.style.removeProperty('--line');
+    }
+  }
+
+  btn.addEventListener('click', () => setTheme(root.getAttribute('data-theme')==='dark' ? 'light' : 'dark'));
+
+  const seal = document.getElementById('seal');
+  const io = new IntersectionObserver((es)=>es.forEach(e=>{ if(e.isIntersecting){ seal.classList.remove('stamp'); void seal.offsetWidth; seal.classList.add('stamp'); }}),{threshold:.6});
+  io.observe(seal);
+
+  const readout = document.getElementById('readout');
+  document.querySelectorAll('.sw').forEach(sw=>{
+    sw.addEventListener('click', ()=>{
+      const dark = root.getAttribute('data-theme')==='dark';
+      document.querySelectorAll('.sw').forEach(s=>s.setAttribute('aria-pressed','false'));
+      sw.setAttribute('aria-pressed','true');
+      applyAccent(sw, dark);
+      readout.textContent = `--shu: oklch(${sw.dataset.l} ${sw.dataset.c} ${sw.dataset.h})`;
+    });
+  });
+</script>
+</body>
+</html>

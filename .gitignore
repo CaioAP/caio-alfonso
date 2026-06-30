@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.astro/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Sanity Studio
+studio/.sanity/
+studio/node_modules/
+studio/dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+.idea/
+
+# Cloudflare
+.wrangler/
+
+# Test output
+playwright-report/
+test-results/
+coverage/
