@@ -1,0 +1,80 @@
+---
+import { PortableText } from 'astro-portabletext';
+import Prose from '../../components/Prose.astro';
+import { urlFor } from '../../content/imageUrl';
+import { getProject, getProjects } from '../../content/queries';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((p) => ({ params: { slug: p.slug.current } }));
+}
+
+const { slug } = Astro.params;
+const project = await getProject(slug);
+const cover = project.cover
+  ? urlFor(project.cover.asset).width(1200).height(630).fit('crop').url()
+  : undefined;
+---
+<BaseLayout title={`${project.title} — Caio`} description={project.summary} ogImage={cover}>
+  <article class="band">
+    <div class="wrap">
+      <header class="case-header">
+        <p class="eyebrow">{[project.role, project.period].filter(Boolean).join(' · ')}</p>
+        <h1>{project.title}</h1>
+        <p class="lede">{project.summary}</p>
+        <div class="case-meta">
+          <div class="stack-chips">
+            {project.stack.map((s) => <span class="chip">{s}</span>)}
+          </div>
+          <div class="case-links">
+            {project.links.map((l) => (
+              <a class="btn" href={l.url} target="_blank" rel="noopener">{l.label} ↗</a>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      {cover && project.cover && (
+        <img class="case-cover" src={cover} alt={project.cover.alt} width="1200" height="630" loading="eager" />
+      )}
+
+      <Prose>
+        <PortableText value={project.body} />
+      </Prose>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .case-header {
+    margin-bottom: 3rem;
+  }
+  .case-header h1 {
+    font-size: clamp(2rem, 1.7rem + 1.3vw, 3rem);
+    margin-top: .6rem;
+  }
+  .case-meta {
+    display: flex;
+    gap: 1.4rem;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 2rem;
+  }
+  .stack-chips {
+    display: flex;
+    gap: .4rem;
+    flex-wrap: wrap;
+  }
+  .case-links {
+    display: flex;
+    gap: .8rem;
+  }
+  .case-cover {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    margin-bottom: 3rem;
+    display: block;
+  }
+</style>

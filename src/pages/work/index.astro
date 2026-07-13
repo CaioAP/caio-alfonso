@@ -1,0 +1,53 @@
+---
+import { getExperiences, getProjects } from '../../content/queries';
+import ProjectCard from '../../features/work/ProjectCard.astro';
+import TimelineRow from '../../features/work/TimelineRow.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const experiences = await getExperiences(); // ordered by order asc
+const projects = await getProjects(); // all, ordered by order asc
+---
+<BaseLayout
+  title="Work & Experience — Caio"
+  description="Experience timeline and selected projects — frontend engineering with a usability and architecture focus."
+>
+  <!-- Experience timeline -->
+  <section class="band">
+    <div class="wrap">
+      <p class="eyebrow">Experience</p>
+      <h1 class="h2lead">A typed timeline — chronology that carries meaning.</h1>
+      <div class="tl">
+        {experiences.map((e) => <TimelineRow experience={e} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="band" style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow">Projects</p>
+      <h2 class="h2lead">Selected work.</h2>
+      <div class="project-grid">
+        {projects.map((p) => <ProjectCard project={p} />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .tl {
+    margin-top: 2.2rem;
+  }
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0;
+    margin-top: 2.2rem;
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+  .project-grid > :global(.project-card) {
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+</style>

@@ -1,0 +1,66 @@
+---
+import type { Experience } from '../../content/types';
+
+interface Props {
+  experience: Experience;
+}
+const { experience: e } = Astro.props;
+const end = e.end ? new Date(e.end).getFullYear().toString() : 'Present';
+const start = new Date(e.start).getFullYear();
+---
+<div class="tl-row">
+  <div class="tl-date">{start} — {end}</div>
+  <div class="tl-body">
+    <div class="tl-role">{e.role}</div>
+    <div class="tl-co">{e.company}{e.location ? ` · ${e.location}` : ''}</div>
+    {e.highlights.length > 0 && (
+      <ul class="tl-highlights">
+        {e.highlights.map((h) => <li>{h}</li>)}
+      </ul>
+    )}
+  </div>
+</div>
+
+<style>
+  .tl-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 1.6rem;
+    padding: 1.6rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .tl-row:first-child {
+    border-top: 1px solid var(--line);
+  }
+  .tl-date {
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    color: var(--ink-muted);
+    padding-top: .35rem;
+  }
+  .tl-role {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+  .tl-co {
+    color: var(--ink-muted);
+    font-size: .88rem;
+    margin-top: .15rem;
+  }
+  .tl-highlights {
+    margin: .6rem 0 0;
+    padding-left: 1.1rem;
+    color: var(--ink-muted);
+    font-size: .95rem;
+  }
+  .tl-highlights li + li {
+    margin-top: .3rem;
+  }
+  @media (max-width: 560px) {
+    .tl-row {
+      grid-template-columns: 1fr;
+      gap: .3rem;
+    }
+  }
+</style>

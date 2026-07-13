@@ -1,0 +1,28 @@
+---
+import { getPosts } from '../../content/queries';
+import PostRow from '../../features/blog/PostRow.astro';
+import TagFilter from '../../features/blog/TagFilter.vue';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = await getPosts();
+const tags = [...new Set(posts.flatMap((p) => p.tags))].sort();
+---
+<BaseLayout title="Blog — Caio" description="Daily frontend writing — short, shippable ideas about UX, architecture, and the craft.">
+  <section class="band">
+    <div class="wrap">
+      <p class="eyebrow">Blog · daily</p>
+      <h1 class="h2lead">One idea about frontend, every day.</h1>
+      <p class="lede">Short and shippable, organized into series so the cadence holds.</p>
+      <TagFilter tags={tags} client:load />
+      <div class="post-list" id="post-list">
+        {posts.map((p) => <PostRow post={p} />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .post-list {
+    margin-top: 2rem;
+  }
+</style>

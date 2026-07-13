@@ -1,0 +1,12 @@
+---
+interface Props {
+  size?: 'sm' | 'lg';
+  label?: string; // aria-label; omit → aria-hidden
+  stamp?: boolean; // plays stamp animation on mount
+}
+const { size = 'sm', label, stamp = false } = Astro.props;
+---
+<span
+  class:list={['seal', size === 'lg' ? 'seal-lg' : 'seal-sm', stamp && 'seal-stamp']}
+  {...label ? { 'aria-label': label } : { 'aria-hidden': 'true' }}
+>カ</span>

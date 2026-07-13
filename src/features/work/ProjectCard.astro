@@ -1,0 +1,63 @@
+---
+import { urlFor } from '../../content/imageUrl';
+import type { ProjectListItem } from '../../content/types';
+
+interface Props {
+  project: ProjectListItem;
+}
+const { project: p } = Astro.props;
+const imgSrc = p.cover ? urlFor(p.cover.asset).width(640).height(360).fit('crop').url() : null;
+---
+<a class="project-card hairline-card" href={`/work/${p.slug.current}`}>
+  {imgSrc && p.cover && <img src={imgSrc} alt={p.cover.alt} width="640" height="360" loading="lazy" />}
+  <div class="card-body">
+    <div class="card-stack">
+      {p.stack.slice(0, 4).map((s) => <span class="chip">{s}</span>)}
+    </div>
+    <h3>{p.title}</h3>
+    <p>{p.summary}</p>
+    <span class="go">view case study →</span>
+  </div>
+</a>
+
+<style>
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+  }
+  .project-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 1px solid var(--line);
+  }
+  .card-body {
+    padding: 1.4rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+  }
+  .card-stack {
+    display: flex;
+    gap: .4rem;
+    flex-wrap: wrap;
+  }
+  .project-card h3 {
+    font-size: 1.2rem;
+  }
+  .project-card p {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: .92rem;
+  }
+  .go {
+    margin-top: auto;
+    padding-top: .8rem;
+    font-family: var(--font-mono);
+    font-size: .72rem;
+    color: var(--shu-strong);
+  }
+</style>

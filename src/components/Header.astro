@@ -1,0 +1,76 @@
+---
+import Seal from './Seal.astro';
+import ThemeToggle from './ThemeToggle.astro';
+---
+<header class="site-header">
+  <div class="wrap">
+    <nav class="site-nav" aria-label="Primary">
+      <a class="brand" href="/">
+        <Seal size="sm" label="Caio" />
+        <span class="brand-name">Caio</span>
+      </a>
+      <ul role="list">
+        <li><a href="/#about">about</a></li>
+        <li><a href="/work">experience</a></li>
+        <li><a href="/playground">playground</a></li>
+        <li><a href="/blog">blog</a></li>
+      </ul>
+      <ThemeToggle />
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in oklch, var(--paper) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .brand-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.12rem;
+    letter-spacing: .02em;
+  }
+  ul {
+    display: flex;
+    gap: 1.6rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  ul a {
+    color: var(--ink-muted);
+    text-decoration: none;
+    font-size: .88rem;
+    font-family: var(--font-mono);
+    letter-spacing: .04em;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  ul a:hover {
+    color: var(--ink);
+  }
+  @media (max-width: 760px) {
+    ul {
+      display: none;
+    }
+  }
+</style>

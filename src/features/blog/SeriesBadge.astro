@@ -1,0 +1,22 @@
+---
+interface Props {
+  title: string;
+  slug: string;
+}
+const { title, slug } = Astro.props;
+---
+<a class="series-badge" href={`/blog/series/${slug}`}>{title}</a>
+
+<style>
+  .series-badge {
+    font-family: var(--font-mono);
+    font-size: .68rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--shu-strong);
+    text-decoration: none;
+    border: 1px solid var(--shu);
+    border-radius: 9999px;
+    padding: .25rem .7rem;
+  }
+</style>

@@ -1,0 +1,54 @@
+---
+import { urlFor } from '../../content/imageUrl';
+
+interface Props {
+  photo?: { asset: object; alt: string };
+}
+const { photo } = Astro.props;
+const src = photo ? urlFor(photo.asset).width(640).height(640).fit('crop').url() : null;
+---
+<div class="hero-photo fade-up delay-2">
+  {src && photo
+    ? <img src={src} alt={photo.alt} width="320" height="320" loading="eager" />
+    : <span class="photo-hint">profile photo</span>
+  }
+  <div class="seal-corner" aria-hidden="true">
+    <span class="seal seal-sm">カ</span>
+  </div>
+</div>
+
+<style>
+  .hero-photo {
+    position: relative;
+    aspect-ratio: 1;
+    border: 1px solid var(--line);
+    background: var(--surface-sunk);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .photo-hint {
+    font-family: var(--font-mono);
+    font-size: .68rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .seal-corner {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+  }
+  @media (max-width: 760px) {
+    .hero-photo {
+      order: -1;
+      max-width: 200px;
+    }
+  }
+</style>

@@ -1,0 +1,176 @@
+---
+import { PortableText } from 'astro-portabletext';
+import Seal from '../components/Seal.astro';
+import { getPosts, getProfile, getProjects } from '../content/queries';
+import PostRow from '../features/blog/PostRow.astro';
+import HeroPhoto from '../features/home/HeroPhoto.astro';
+import ProjectCard from '../features/work/ProjectCard.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const profile = await getProfile();
+const projects = (await getProjects()).filter((p) => p.featured).slice(0, 3);
+const posts = (await getPosts()).slice(0, 5);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  jobTitle: 'Frontend Engineer',
+  url: Astro.site?.toString(),
+  sameAs: profile.socials.map((s) => s.url),
+};
+---
+<BaseLayout
+  title={`${profile.name} — Frontend Engineer`}
+  description={profile.headline}
+  schema={schema}
+>
+  <!-- Hero -->
+  <section class="wrap hero">
+    <div class="hero-text">
+      <div class="row1 fade-up delay-1">
+        <Seal size="lg" label="Caio" stamp />
+        <p class="eyebrow">
+          Frontend Engineer<br>
+          {profile.location}
+        </p>
+      </div>
+      <h1 class="fade-up delay-1">{profile.headline}</h1>
+      <p class="hero-lead fade-up delay-2">
+        Usability-first interfaces, token-driven design systems, and the
+        architecture underneath them — built in the open.
+      </p>
+      <div class="cta fade-up delay-2">
+        <a class="btn btn-fill" href="/playground">See the work</a>
+        <a class="link mono" href="/work">experience &amp; timeline →</a>
+      </div>
+      <div class="chips fade-up delay-3">
+        <span class="chip chip-lead">Vue · Nuxt</span>
+        <span class="chip">TypeScript</span>
+        <span class="chip">Tailwind</span>
+        <span class="chip">Usability / a11y</span>
+        <span class="chip">Architecture · refactoring</span>
+        <span class="chip">React · Next (learning)</span>
+      </div>
+    </div>
+
+    <HeroPhoto photo={profile.photo} />
+  </section>
+
+  <!-- About strip -->
+  <section class="band" id="about">
+    <div class="wrap">
+      <p class="eyebrow">About</p>
+      <h2 class="h2lead">Interfaces are systems. I build both.</h2>
+      <div class="about-body">
+        <PortableText value={profile.bio} />
+      </div>
+      <a class="link" href="/about">More about me →</a>
+    </div>
+  </section>
+
+  <!-- Featured projects -->
+  <section class="band" id="projects" style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow">Work</p>
+      <h2 class="h2lead">Selected projects.</h2>
+      <div class="project-grid">
+        {projects.map((p) => <ProjectCard project={p} />)}
+      </div>
+      <a class="link" href="/work">Full experience &amp; timeline →</a>
+    </div>
+  </section>
+
+  <!-- Latest posts -->
+  <section class="band" id="blog" style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow">Blog · daily</p>
+      <h2 class="h2lead">One idea about frontend, every day.</h2>
+      <div class="post-list">
+        {posts.map((p) => <PostRow post={p} />)}
+      </div>
+      <a class="link" href="/blog">All posts →</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr clamp(200px, 28vw, 320px);
+    gap: clamp(40px, 7vw, 96px);
+    align-items: center;
+    padding-block: clamp(80px, 10vw, 140px);
+  }
+  .row1 {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.4rem;
+    margin-bottom: 2rem;
+  }
+  .hero h1 {
+    font-size: var(--text-step-5);
+    max-width: 18ch;
+  }
+  .hero-lead {
+    color: var(--ink-muted);
+    font-size: clamp(1.1rem, 1rem + .5vw, 1.35rem);
+    max-width: 52ch;
+    margin-top: 1.8rem;
+    line-height: 1.75;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-top: 3rem;
+    align-items: flex-start; /* prevents stretch height mismatch */
+  }
+  .cta {
+    display: flex;
+    gap: 1.4rem;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 2.4rem;
+  }
+  .mono {
+    font-family: var(--font-mono);
+    font-size: .85rem;
+  }
+  @media (max-width: 760px) {
+    .hero {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .about-body {
+    max-width: 70%;
+    margin-top: 1.2rem;
+    margin-bottom: 1.8rem;
+    color: var(--ink-muted);
+  }
+  @media (max-width: 900px) {
+    .about-body {
+      max-width: 100%;
+    }
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0;
+    margin-top: 2.2rem;
+    margin-bottom: 1.8rem;
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+  .project-grid > :global(.project-card) {
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .post-list {
+    margin-top: 2rem;
+    margin-bottom: 1.8rem;
+  }
+</style>

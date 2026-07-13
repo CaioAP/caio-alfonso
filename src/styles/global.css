@@ -1,0 +1,337 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Zen Old Mincho", Georgia, serif;
+  --font-body: "Zen Kaku Gothic New", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --radius-seal: 8px;
+  --radius-1: 4px;
+  /* motion */
+  --dur-1: 140ms;
+  --dur-2: 260ms;
+  --dur-stamp: 420ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-stamp: cubic-bezier(0.34, 1.4, 0.5, 1);
+  /* fluid type scale */
+  --text-step--1: clamp(0.8rem, 0.76rem + 0.18vw, 0.92rem);
+  --text-step-0: clamp(1rem, 0.95rem + 0.25vw, 1.1rem);
+  --text-step-1: clamp(1.18rem, 1.1rem + 0.4vw, 1.4rem);
+  --text-step-2: clamp(1.42rem, 1.28rem + 0.6vw, 1.75rem);
+  --text-step-3: clamp(1.7rem, 1.48rem + 0.95vw, 2.25rem);
+  --text-step-4: clamp(2.05rem, 1.7rem + 1.5vw, 2.95rem);
+  --text-step-5: clamp(2.5rem, 1.95rem + 2.4vw, 4rem);
+}
+
+/* ── Light: Washi ── */
+:root,
+[data-theme="light"] {
+  --paper: oklch(0.972 0.005 85);
+  --surface: oklch(0.99 0.003 85);
+  --surface-sunk: oklch(0.95 0.006 80);
+  --ink: oklch(0.26 0.012 60);
+  --ink-muted: oklch(
+    0.47 0.012 60
+  ); /* darkened from doc's 0.50 — that lands at 4.36:1 on washi, under AA */
+  --ink-faint: oklch(0.66 0.01 60);
+  --line: oklch(0.88 0.006 70);
+  --shu: oklch(0.585 0.165 36);
+  --shu-strong: oklch(0.52 0.17 36);
+  --shu-soft: oklch(0.94 0.04 36);
+  --ai: oklch(0.42 0.09 252);
+  --on-shu: oklch(0.99 0.005 85);
+  color-scheme: light;
+}
+
+/* ── Dark: Sumi ── */
+[data-theme="dark"] {
+  --paper: oklch(0.235 0.012 55);
+  --surface: oklch(0.275 0.012 55);
+  --surface-sunk: oklch(0.205 0.01 55);
+  --ink: oklch(0.92 0.012 80);
+  --ink-muted: oklch(0.7 0.012 70);
+  --ink-faint: oklch(0.55 0.012 60);
+  --line: oklch(0.36 0.012 55);
+  --shu: oklch(0.66 0.15 38);
+  --shu-strong: oklch(0.72 0.14 38);
+  --shu-soft: oklch(0.32 0.06 36);
+  --ai: oklch(0.62 0.1 250);
+  --on-shu: oklch(0.18 0.01 55);
+  color-scheme: dark;
+}
+
+/* ── Base ── */
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  line-height: 1.18;
+}
+::selection {
+  background: color-mix(in oklch, var(--shu) 26%, transparent);
+}
+
+/* ── Layout wrap ── */
+.wrap {
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: clamp(22px, 5vw, 56px);
+}
+
+/* ── Section band ── */
+.band {
+  padding-block: clamp(64px, 9vw, 128px);
+}
+
+/* ── Heading + lede helpers ── */
+.h2lead {
+  font-size: var(--text-step-3);
+  margin-top: 0.5rem;
+}
+.lede {
+  color: var(--ink-muted);
+  max-width: 58ch;
+  margin-top: 1rem;
+  font-size: var(--text-step-1);
+  line-height: 1.7;
+}
+
+/* ── Eyebrow label ── */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+/* ── Animated link underline ── */
+.link {
+  color: var(--ink);
+  text-decoration: none;
+  background-image: linear-gradient(var(--shu), var(--shu));
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size var(--dur-1) var(--ease-out);
+}
+.link:hover,
+.link:focus-visible {
+  background-size: 100% 1px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .link {
+    background-size: 100% 1px;
+  }
+}
+
+/* ── Focus ── */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--shu);
+  outline-offset: 3px;
+}
+
+/* ── Seal ── */
+.seal {
+  display: inline-grid;
+  place-items: center;
+  background: var(--shu);
+  color: var(--on-shu);
+  font-family: var(--font-display);
+  font-weight: 700;
+  border-radius: var(--radius-seal);
+  line-height: 1;
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklch, var(--on-shu) 22%, transparent);
+  user-select: none;
+}
+.seal-sm {
+  width: 30px;
+  height: 30px;
+  font-size: 17px;
+}
+.seal-lg {
+  width: 78px;
+  height: 78px;
+  font-size: 46px;
+}
+
+/* ── Seal stamp animation ── */
+@media (prefers-reduced-motion: no-preference) {
+  .seal-stamp {
+    animation: seal-stamp var(--dur-stamp) var(--ease-stamp) both;
+  }
+  @keyframes seal-stamp {
+    0% {
+      opacity: 0;
+      transform: scale(1.18) rotate(-4deg);
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* ── Entrance fade ── */
+@media (prefers-reduced-motion: no-preference) {
+  .fade-up {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: fade-up var(--dur-2) var(--ease-out) forwards;
+  }
+  .delay-1 {
+    animation-delay: 100ms;
+  }
+  .delay-2 {
+    animation-delay: 220ms;
+  }
+  .delay-3 {
+    animation-delay: 340ms;
+  }
+  @keyframes fade-up {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* ── Chip ── */
+.chip {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  padding: 0.32rem 0.8rem;
+}
+.chip-lead {
+  border-color: var(--shu);
+  color: var(--shu-strong);
+}
+
+/* ── Button ── */
+.btn {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.92rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 1.25rem;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  background: transparent;
+  border-radius: var(--radius-1);
+  cursor: pointer;
+  transition:
+    background var(--dur-1),
+    color var(--dur-1);
+}
+.btn:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+/* Filled CTA uses --shu-strong: --on-shu on plain --shu is only ~3:1 (fails AA). */
+.btn-fill {
+  background: var(--shu-strong);
+  border-color: var(--shu-strong);
+  color: var(--on-shu);
+}
+.btn-fill:hover {
+  background: color-mix(in oklch, var(--shu-strong) 85%, var(--ink));
+  border-color: color-mix(in oklch, var(--shu-strong) 85%, var(--ink));
+  color: var(--on-shu);
+}
+
+/* ── Hairline card hover ── */
+.hairline-card {
+  position: relative;
+  border: 1px solid var(--line);
+  transition: background var(--dur-1);
+}
+.hairline-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--shu);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.22s var(--ease-out);
+}
+.hairline-card:hover {
+  background: var(--surface);
+}
+.hairline-card:hover::before {
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hairline-card::before {
+    transition: none;
+  }
+}
+
+/* ── Prose ── */
+.prose {
+  max-width: 68ch;
+  color: var(--ink);
+  line-height: 1.75;
+}
+.prose h2,
+.prose h3 {
+  margin-top: 2.4rem;
+  margin-bottom: 0.8rem;
+}
+.prose p {
+  margin-top: 1.2rem;
+}
+.prose code,
+.prose pre {
+  font-family: var(--font-mono);
+  background: var(--surface-sunk);
+  border-radius: var(--radius-1);
+}
+.prose code {
+  font-size: 0.88em;
+  padding: 0.15em 0.4em;
+}
+.prose pre {
+  padding: 1.2rem 1.4rem;
+  overflow-x: auto;
+  margin-top: 1.4rem;
+}
+.prose pre code {
+  background: transparent;
+  padding: 0;
+}
+.prose a {
+  color: var(--shu-strong);
+}
+.prose ul,
+.prose ol {
+  margin-top: 1.2rem;
+  padding-left: 1.4rem;
+}
+.prose li + li {
+  margin-top: 0.4rem;
+}
+.prose blockquote {
+  margin: 1.4rem 0 0;
+  padding-left: 1.2rem;
+  border-left: 2px solid var(--shu);
+  color: var(--ink-muted);
+}
+.prose img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  margin-top: 1.4rem;
+}

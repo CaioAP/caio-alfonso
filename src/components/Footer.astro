@@ -1,0 +1,40 @@
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-row">
+      <p>© {new Date().getFullYear()} Caio · Frontend Engineer · Goiânia</p>
+      <nav aria-label="Footer">
+        <a href="https://github.com/caio" class="link" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/caio" class="link" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="/rss.xml" class="link">RSS</a>
+        <a href="/cv.pdf" class="link" download>CV ↓</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+  }
+  .footer-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    padding-block: 2.4rem;
+    color: var(--ink-muted);
+    font-size: .86rem;
+  }
+  nav {
+    display: flex;
+    gap: 1.4rem;
+  }
+  nav a {
+    font-family: var(--font-mono);
+    font-size: .8rem;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+</style>

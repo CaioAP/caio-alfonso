@@ -1,0 +1,62 @@
+---
+import type { PostListItem } from '../../content/types';
+
+interface Props {
+  post: PostListItem;
+}
+const { post } = Astro.props;
+const date = new Date(post.publishedAt).toLocaleDateString('en-US', {
+  month: '2-digit',
+  day: '2-digit',
+});
+---
+<a class="post-row" href={`/blog/${post.slug.current}`} data-tags={post.tags.join(',')}>
+  <span class="pd">{date}</span>
+  <span class="pt">{post.title}</span>
+  {post.series && <span class="ps">{post.series.title}</span>}
+</a>
+
+<style>
+  .post-row {
+    display: grid;
+    grid-template-columns: 96px 1fr auto;
+    gap: 1.4rem;
+    align-items: baseline;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    color: inherit;
+  }
+  .post-row:first-child {
+    border-top: 1px solid var(--line);
+  }
+  .post-row:hover .pt {
+    color: var(--shu-strong);
+  }
+  .pd {
+    font-family: var(--font-mono);
+    font-size: .76rem;
+    color: var(--ink-muted);
+  }
+  .pt {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.08rem;
+    transition: color 140ms;
+  }
+  .ps {
+    font-family: var(--font-mono);
+    font-size: .68rem;
+    color: var(--ink-muted);
+    white-space: nowrap;
+  }
+  @media (max-width: 560px) {
+    .post-row {
+      grid-template-columns: 1fr;
+      gap: .2rem;
+    }
+    .ps {
+      display: none;
+    }
+  }
+</style>

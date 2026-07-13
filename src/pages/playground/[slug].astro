@@ -1,0 +1,56 @@
+---
+import { getDemo, registry } from '../../features/playground/_registry';
+import ContrastChecker from '../../features/playground/color-contrast/ContrastChecker.vue';
+import CommandPalette from '../../features/playground/command-palette/CommandPalette.vue';
+import StatesQuartet from '../../features/playground/states-quartet/StatesQuartet.vue';
+import TokenStudio from '../../features/playground/token-studio/TokenStudio';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  return registry.map((d) => ({ params: { slug: d.id } }));
+}
+
+const { slug } = Astro.params;
+const demo = getDemo(slug);
+if (!demo) throw new Error(`Demo not found: ${slug}`);
+---
+<BaseLayout title={`${demo.title} — Playground — Caio`} description={demo.description}>
+  <div class="demo-shell band">
+    <header class="demo-header wrap">
+      <p class="eyebrow">{demo.framework}</p>
+      <h1>{demo.title}</h1>
+      <p class="lede">{demo.description}</p>
+    </header>
+
+    <div class="demo-stage wrap" id="demo-stage">
+      {slug === 'token-studio' && <TokenStudio client:load />}
+      {slug === 'color-contrast' && <ContrastChecker client:load />}
+      {slug === 'command-palette' && <CommandPalette client:load />}
+      {slug === 'states-quartet' && <StatesQuartet client:visible />}
+    </div>
+
+    <aside class="demo-note wrap">
+      <p class="eyebrow">How it's built</p>
+      <p>{demo.howBuilt}</p>
+    </aside>
+  </div>
+</BaseLayout>
+
+<style>
+  .demo-header h1 {
+    font-size: var(--text-step-4);
+    margin-top: .5rem;
+  }
+  .demo-stage {
+    margin-top: 3rem;
+  }
+  .demo-note {
+    margin-top: 4rem;
+  }
+  .demo-note p:last-child {
+    max-width: 68ch;
+    color: var(--ink-muted);
+    margin-top: .8rem;
+    line-height: 1.75;
+  }
+</style>

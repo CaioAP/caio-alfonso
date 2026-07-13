@@ -1,0 +1,31 @@
+---
+import { getPosts, getSeriesList } from '../../../content/queries';
+import PostRow from '../../../features/blog/PostRow.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const series = await getSeriesList();
+  return series.map((s) => ({ params: { slug: s.slug.current }, props: { series: s } }));
+}
+
+const { series } = Astro.props;
+const posts = (await getPosts()).filter((p) => p.series?.slug.current === series.slug.current);
+---
+<BaseLayout title={`${series.title} — Blog — Caio`} description={series.description ?? `Posts in the ${series.title} series.`}>
+  <section class="band">
+    <div class="wrap">
+      <p class="eyebrow">Series</p>
+      <h1 class="h2lead">{series.title}</h1>
+      {series.description && <p class="lede">{series.description}</p>}
+      <div class="post-list">
+        {posts.map((p) => <PostRow post={p} />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .post-list {
+    margin-top: 2rem;
+  }
+</style>

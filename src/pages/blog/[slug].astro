@@ -1,0 +1,82 @@
+---
+import { PortableText } from 'astro-portabletext';
+import Prose from '../../components/Prose.astro';
+import { getPost, getPosts } from '../../content/queries';
+import { readingTime } from '../../features/blog/ReadingTime';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((p) => ({ params: { slug: p.slug.current } }));
+}
+
+const { slug } = Astro.params;
+const post = await getPost(slug);
+const reading = readingTime(post.body);
+const ogImage = new URL(`/og/${slug}.png`, Astro.site).toString();
+const published = new Date(post.publishedAt).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.title,
+  datePublished: post.publishedAt,
+  dateModified: post.updatedAt ?? post.publishedAt,
+  description: post.excerpt,
+  image: ogImage,
+  author: { '@type': 'Person', name: 'Caio' },
+};
+---
+<BaseLayout title={`${post.title} — Caio`} description={post.excerpt} ogImage={ogImage} schema={schema}>
+  <article class="band">
+    <div class="wrap">
+      <header>
+        <p class="eyebrow">
+          {published}
+          {post.series && <> · <a href={`/blog/series/${post.series.slug.current}`}>{post.series.title}</a></>}
+          · {reading} min read
+        </p>
+        <h1>{post.title}</h1>
+        <p class="excerpt">{post.excerpt}</p>
+      </header>
+      <Prose>
+        <PortableText value={post.body} />
+      </Prose>
+      {post.tags.length > 0 && (
+        <footer class="post-footer">
+          {post.tags.map((t) => <span class="chip">{t}</span>)}
+        </footer>
+      )}
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  header h1 {
+    font-size: var(--text-step-4);
+    margin-top: .6rem;
+    max-width: 24ch;
+  }
+  .excerpt {
+    color: var(--ink-muted);
+    font-size: var(--text-step-1);
+    max-width: 52ch;
+    margin-top: 1rem;
+    margin-bottom: 2.4rem;
+  }
+  .eyebrow a {
+    color: var(--shu-strong);
+  }
+  .post-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-top: 3rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--line);
+  }
+</style>

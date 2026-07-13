@@ -1,0 +1,27 @@
+---
+// No props — BaseLayout's inline script sets data-theme before first paint; this only toggles.
+---
+<button
+  id="theme-toggle"
+  class="toggle"
+  aria-pressed="false"
+  style="cursor:pointer;background:transparent;border:1px solid var(--line);color:var(--ink-muted);border-radius:var(--radius-1);padding:.4rem .7rem;font-family:var(--font-mono);font-size:.72rem;min-height:44px;"
+>light / dark</button>
+
+<script>
+  const root = document.documentElement;
+  const btn = document.getElementById('theme-toggle') as HTMLButtonElement;
+
+  function setTheme(t: string) {
+    root.setAttribute('data-theme', t);
+    btn.setAttribute('aria-pressed', String(t === 'dark'));
+    localStorage.setItem('theme', t);
+  }
+
+  // First paint already handled inline in BaseLayout; sync button state.
+  btn.setAttribute('aria-pressed', String(root.getAttribute('data-theme') === 'dark'));
+
+  btn.addEventListener('click', () =>
+    setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'),
+  );
+</script>

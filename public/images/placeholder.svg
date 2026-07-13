@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+  <rect width="640" height="640" fill="#ece8df"/>
+  <rect x="0.5" y="0.5" width="639" height="639" fill="none" stroke="#ddd9d0"/>
+  <text x="320" y="330" font-family="ui-monospace, monospace" font-size="20" letter-spacing="2" fill="#9b9389" text-anchor="middle">PLACEHOLDER</text>
+</svg>
