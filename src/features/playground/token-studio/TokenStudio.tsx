@@ -83,7 +83,7 @@ export default function TokenStudio() {
   return (
     <div className="ts">
       <p className="ts-note">
-        These sliders edit this page's real CSS custom properties — the whole site re-themes as you
+        These sliders edit this page's real CSS custom properties: the whole site re-themes as you
         drag. Reset puts the stylesheet back in charge.
       </p>
 

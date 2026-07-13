@@ -14,7 +14,7 @@ const { slug } = Astro.params;
 const demo = getDemo(slug);
 if (!demo) throw new Error(`Demo not found: ${slug}`);
 ---
-<BaseLayout title={`${demo.title} — Playground — Caio`} description={demo.description}>
+<BaseLayout title={`${demo.title} | Playground | Caio`} description={demo.description}>
   <div class="demo-shell band">
     <header class="demo-header wrap">
       <p class="eyebrow">{demo.framework}</p>

@@ -31,7 +31,7 @@
   --ink: oklch(0.26 0.012 60);
   --ink-muted: oklch(
     0.47 0.012 60
-  ); /* darkened from doc's 0.50 — that lands at 4.36:1 on washi, under AA */
+  ); /* darkened from doc's 0.50: that lands at 4.36:1 on washi, under AA */
   --ink-faint: oklch(0.66 0.01 60);
   --line: oklch(0.88 0.006 70);
   --shu: oklch(0.585 0.165 36);

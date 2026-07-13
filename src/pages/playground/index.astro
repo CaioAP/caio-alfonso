@@ -2,12 +2,12 @@
 import { registry } from '../../features/playground/_registry';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Playground — Caio" description="Small, finished demos you can poke at.">
+<BaseLayout title="Playground | Caio" description="Small, finished demos you can poke at.">
   <section class="band">
     <div class="wrap">
       <p class="eyebrow">Playground</p>
       <h1 class="h2lead">Small, finished things you can poke at.</h1>
-      <p class="lede">Each is an isolated island — some Vue, some React — with a short note on how it's built.</p>
+      <p class="lede">Each is an isolated island (some Vue, some React) with a short note on how it's built.</p>
       <div class="demo-grid">
         {registry.map((demo) => (
           <a class="demo-card hairline-card" href={`/playground/${demo.id}`}>

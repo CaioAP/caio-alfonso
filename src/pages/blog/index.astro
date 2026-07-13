@@ -7,7 +7,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 const posts = await getPosts();
 const tags = [...new Set(posts.flatMap((p) => p.tags))].sort();
 ---
-<BaseLayout title="Blog — Caio" description="Daily frontend writing — short, shippable ideas about UX, architecture, and the craft.">
+<BaseLayout title="Blog | Caio" description="Daily frontend writing: short, shippable ideas about UX, architecture, and the craft.">
   <section class="band">
     <div class="wrap">
       <p class="eyebrow">Blog · daily</p>

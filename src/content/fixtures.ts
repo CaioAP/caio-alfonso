@@ -16,11 +16,11 @@ function block(key: string, text: string, style = 'normal') {
 
 export const fixtureProfile = {
   name: 'Caio',
-  headline: 'Interfaces that work for people — built from systems, not luck.',
+  headline: 'Interfaces that work for people, built from systems, not luck.',
   bio: [
     block(
       'bio1',
-      'Frontend engineer focused on usability and architecture. Vue and Nuxt are home turf; React and Next are the learning arc, shown in public. I care about the invisible details — focus order, motion preferences, loading states — because that is where usability actually lives.',
+      'Frontend engineer focused on usability and architecture. Vue and Nuxt are home turf; React and Next are the learning arc, shown in public. I care about the invisible details (focus order, motion preferences, loading states) because that is where usability actually lives.',
     ),
     block(
       'bio2',
@@ -87,7 +87,7 @@ export const fixtureProjects = [
     period: '2024–2025',
     stack: ['Vue', 'TypeScript', 'Tailwind', 'Figma Tokens'],
     summary:
-      'A CSS-variable token system powering three products from one source of truth — themes, spacing, and type scale included.',
+      'A CSS-variable token system powering three products from one source of truth: themes, spacing, and type scale included.',
     body: [
       block(
         'p1b1',
@@ -110,7 +110,7 @@ export const fixtureProjects = [
     period: '2022–2023',
     stack: ['Nuxt', 'Sanity', 'Cloudflare'],
     summary:
-      'Headless CMS to static edge deploy in under two minutes — writers publish without touching git.',
+      'Headless CMS to static edge deploy in under two minutes: writers publish without touching git.',
     body: [
       block('p2b1', 'Editors needed to publish daily without engineering in the loop.'),
       block(
@@ -172,7 +172,7 @@ export const fixturePosts = [
       ),
       block(
         'po1b2',
-        'Loading deserves a skeleton, not just a spinner — it preserves layout and sets expectations. Empty deserves an invitation: what can the user do to fill this space? Error deserves a human sentence and a retry action. Success is the easy one; you already built it.',
+        'Loading deserves a skeleton, not just a spinner: it preserves layout and sets expectations. Empty deserves an invitation: what can the user do to fill this space? Error deserves a human sentence and a retry action. Success is the easy one; you already built it.',
       ),
       block(
         'po1b3',
@@ -187,7 +187,7 @@ export const fixturePosts = [
     slug: { current: 'focus-management-checklist' },
     publishedAt: '2026-07-09T09:00:00Z',
     excerpt:
-      'Keyboard users notice the feature you forgot. Where focus lands after an action is a design decision — make it on purpose.',
+      'Keyboard users notice the feature you forgot. Where focus lands after an action is a design decision: make it on purpose.',
     tags: ['a11y', 'ux'],
     series: { title: 'UX & Usability', slug: { current: 'ux-usability' } },
     body: [
@@ -218,7 +218,7 @@ export const fixturePosts = [
       ),
       block(
         'po3b2',
-        'Feature folders keep change local: src/features/blog owns its components, utils, and types. The exception: genuine cross-feature primitives — Button, Prose — which earn a shared components/ home.',
+        'Feature folders keep change local: src/features/blog owns its components, utils, and types. The exception: genuine cross-feature primitives (Button, Prose) which earn a shared components/ home.',
       ),
     ],
     draft: false,
@@ -234,7 +234,7 @@ export const fixturePosts = [
     body: [
       block(
         'po4b1',
-        'In Vue, watch(source, callback) declares its trigger explicitly. In React, useEffect re-runs when anything in its dependency array changes — and the array is on you to get right.',
+        'In Vue, watch(source, callback) declares its trigger explicitly. In React, useEffect re-runs when anything in its dependency array changes, and the array is on you to get right.',
       ),
       block(
         'po4b2',
@@ -254,7 +254,7 @@ export const fixturePosts = [
     body: [
       block(
         'po5b1',
-        'This site’s text selection color is color-mix(in oklch, var(--shu) 26%, transparent) — a wash derived from the accent token at use-time. One less token to maintain, and it tracks theme changes automatically.',
+        'This site’s text selection color is color-mix(in oklch, var(--shu) 26%, transparent): a wash derived from the accent token at use-time. One less token to maintain, and it tracks theme changes automatically.',
       ),
     ],
     draft: false,

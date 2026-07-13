@@ -42,7 +42,7 @@ function swap() {
 <template>
   <div class="cc">
     <p class="cc-note">
-      Pick a text color and a background. The verdict is the WCAG 2.2 contrast ratio —
+      Pick a text color and a background. The verdict is the WCAG 2.2 contrast ratio:
       AA needs 4.5:1 for normal text, 3:1 for large text.
     </p>
 
@@ -62,7 +62,7 @@ function swap() {
 
     <div class="cc-preview" :style="{ background: bg, color: fg }">
       <p class="cc-large">Large heading text</p>
-      <p class="cc-normal">Normal body text at regular size — the harder test to pass.</p>
+      <p class="cc-normal">Normal body text at regular size: the harder test to pass.</p>
     </div>
 
     <div v-if="ratio" class="cc-verdict" aria-live="polite">

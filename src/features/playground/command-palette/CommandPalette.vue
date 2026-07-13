@@ -152,7 +152,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onGlobalKeydown));
 <template>
   <div class="cp">
     <p class="cp-note">
-      Press <kbd>⌘K</kbd> / <kbd>Ctrl+K</kbd> anywhere on this page — or use the button.
+      Press <kbd>⌘K</kbd> / <kbd>Ctrl+K</kbd> anywhere on this page, or use the button.
       Arrow keys navigate, <kbd>Enter</kbd> runs, <kbd>Esc</kbd> closes.
     </p>
     <button type="button" class="btn" @click="openPalette">Open palette ⌘K</button>
@@ -178,7 +178,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onGlobalKeydown));
             aria-controls="cp-listbox"
             :aria-activedescendant="results[activeIndex] ? `cp-item-${results[activeIndex].id}` : undefined"
           />
-          <div v-if="results.length === 0" class="cp-empty">No matches — try a shorter query.</div>
+          <div v-if="results.length === 0" class="cp-empty">No matches; try a shorter query.</div>
           <ul v-else id="cp-listbox" class="cp-list" role="listbox">
             <template v-for="[group, items] in grouped" :key="group">
               <li class="cp-group" role="presentation">{{ group }}</li>

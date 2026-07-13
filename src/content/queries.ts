@@ -30,13 +30,13 @@ function warnFixtures() {
   if (!warned) {
     warned = true;
     console.warn(
-      '[content] SANITY_PROJECT_ID not set — building from local fixtures. ' +
+      '[content] SANITY_PROJECT_ID not set; building from local fixtures. ' +
         'Set the Sanity env vars (.env.example) to build from real content.',
     );
   }
 }
 
-/** Throws if content fails Zod validation — fails the build loudly. */
+/** Throws if content fails Zod validation; fails the build loudly. */
 function validate<T>(schema: { parse(d: unknown): T }, data: unknown): T {
   return schema.parse(data);
 }

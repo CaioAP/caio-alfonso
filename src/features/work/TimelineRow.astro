@@ -9,7 +9,7 @@ const end = e.end ? new Date(e.end).getFullYear().toString() : 'Present';
 const start = new Date(e.start).getFullYear();
 ---
 <div class="tl-row">
-  <div class="tl-date">{start} — {end}</div>
+  <div class="tl-date">{start}–{end}</div>
   <div class="tl-body">
     <div class="tl-role">{e.role}</div>
     <div class="tl-co">{e.company}{e.location ? ` · ${e.location}` : ''}</div>

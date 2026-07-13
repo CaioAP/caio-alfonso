@@ -50,7 +50,7 @@ function retry() {
 <template>
   <div class="sq">
     <p class="sq-note">
-      One widget, four honest states — modeled as a discriminated union so impossible
+      One widget, four honest states, modeled as a discriminated union so impossible
       combinations don't compile. Toggle them manually:
     </p>
 
@@ -84,7 +84,7 @@ function retry() {
       <!-- Error: human message + retry -->
       <div v-else-if="state.kind === 'error'" class="sq-error" role="alert">
         <p class="sq-error-title">Couldn't load the posts</p>
-        <p>{{ state.message }} Your connection looks fine — it's on our side.</p>
+        <p>{{ state.message }} Your connection looks fine; it's on our side.</p>
         <button type="button" class="btn" @click="retry">Try again</button>
       </div>
 

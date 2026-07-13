@@ -4,7 +4,7 @@ import { getPosts } from '../content/queries';
 export async function GET(context: { site: URL }) {
   const posts = await getPosts();
   return rss({
-    title: 'Caio — Frontend Blog',
+    title: 'Caio | Frontend Blog',
     description: 'Daily frontend writing.',
     site: context.site,
     items: posts.map((p) => ({
