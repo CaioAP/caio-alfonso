@@ -2,6 +2,7 @@
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import SkipLink from '../components/SkipLink.astro';
+import { ACCENTS, DEFAULT_ACCENT } from '../lib/accents';
 import '../styles/global.css';
 
 interface Props {
@@ -48,13 +49,70 @@ const ogUrl = ogImage ?? new URL('/og/default.png', Astro.site).toString();
 
   {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
 
-  <!-- Theme: set before first paint to prevent flash -->
-  <script is:inline>
+  <!-- Theme + accent: applied before first paint to prevent flash. -->
+  <script is:inline define:vars={{ accents: ACCENTS, defaultAccent: DEFAULT_ACCENT }}>
     (function () {
-      const t =
-        localStorage.getItem('theme') ||
+      const root = document.documentElement;
+
+      function read(key) {
+        try {
+          return localStorage.getItem(key);
+        } catch {
+          return null;
+        }
+      }
+      function write(key, value) {
+        try {
+          localStorage.setItem(key, value);
+        } catch {}
+      }
+
+      const currentTheme = () =>
+        root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+      const getAccentId = () => read('accent') || defaultAccent;
+
+      function applyAccent(id) {
+        const a = accents[id] || accents[defaultAccent];
+        const dark = currentTheme() === 'dark';
+        const L = dark ? a.dl : a.l;
+        const strong = (L + (dark ? 0.07 : -0.06)).toFixed(3);
+        root.style.setProperty('--shu', `oklch(${L} ${a.c} ${a.h})`);
+        root.style.setProperty('--shu-strong', `oklch(${strong} ${a.c} ${a.h})`);
+        if (dark) {
+          root.style.setProperty('--paper', `oklch(0.235 0.008 ${a.ph})`);
+          root.style.setProperty('--surface', `oklch(0.275 0.008 ${a.ph})`);
+          root.style.setProperty('--surface-sunk', `oklch(0.205 0.007 ${a.ph})`);
+          root.style.setProperty('--line', `oklch(0.36 0.010 ${a.ph})`);
+        } else {
+          // Light mode keeps the default washi neutrals from global.css.
+          root.style.removeProperty('--paper');
+          root.style.removeProperty('--surface');
+          root.style.removeProperty('--surface-sunk');
+          root.style.removeProperty('--line');
+        }
+      }
+
+      function setTheme(theme) {
+        root.setAttribute('data-theme', theme);
+        write('theme', theme);
+        applyAccent(getAccentId());
+        document.dispatchEvent(new CustomEvent('themechange', { detail: { theme } }));
+      }
+
+      function setAccent(id) {
+        write('accent', id);
+        applyAccent(id);
+        document.dispatchEvent(new CustomEvent('accentchange', { detail: { accent: id } }));
+      }
+
+      // First paint: honour stored/system theme, then apply the stored accent.
+      const theme =
+        read('theme') ||
         (window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light');
-      document.documentElement.setAttribute('data-theme', t);
+      root.setAttribute('data-theme', theme);
+      applyAccent(getAccentId());
+
+      window.__ui = { setTheme, setAccent, getAccentId, currentTheme };
     })();
   </script>
 </head>

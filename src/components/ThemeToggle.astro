@@ -12,16 +12,15 @@
   const root = document.documentElement;
   const btn = document.getElementById('theme-toggle') as HTMLButtonElement;
 
-  function setTheme(t: string) {
-    root.setAttribute('data-theme', t);
-    btn.setAttribute('aria-pressed', String(t === 'dark'));
-    localStorage.setItem('theme', t);
-  }
+  const sync = () =>
+    btn.setAttribute('aria-pressed', String(root.getAttribute('data-theme') === 'dark'));
 
-  // First paint already handled inline in BaseLayout; sync button state.
-  btn.setAttribute('aria-pressed', String(root.getAttribute('data-theme') === 'dark'));
+  // First paint + accent already handled by BaseLayout's inline controller.
+  sync();
 
   btn.addEventListener('click', () =>
-    setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'),
+    window.__ui.setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'),
   );
+
+  document.addEventListener('themechange', sync);
 </script>

@@ -1,0 +1,84 @@
+---
+import { ACCENT_LIST, DEFAULT_ACCENT } from '../lib/accents';
+---
+<div class="accent-picker" role="group" aria-label="Accent color">
+  {ACCENT_LIST.map((a) => (
+    <button
+      type="button"
+      class="accent-sw"
+      data-accent={a.id}
+      aria-pressed={a.id === DEFAULT_ACCENT ? 'true' : 'false'}
+      title={a.label}
+      aria-label={`Accent color: ${a.label}`}
+      style={`--sw: oklch(${a.l} ${a.c} ${a.h})`}
+    >
+      <span class="dot"></span>
+    </button>
+  ))}
+</div>
+
+<style>
+  .accent-picker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+  }
+  .accent-sw {
+    /* 44px hit area (WCAG 2.2 target size); visible swatch is the inner dot. */
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+  .dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 9999px;
+    background: var(--sw);
+    box-shadow: 0 0 0 1px color-mix(in oklch, var(--ink) 22%, transparent);
+    transition: transform var(--dur-1) var(--ease-out);
+  }
+  .accent-sw:hover .dot {
+    transform: scale(1.15);
+  }
+  .accent-sw[aria-pressed="true"] .dot {
+    box-shadow:
+      0 0 0 2px var(--paper),
+      0 0 0 3.5px var(--ink);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dot {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const btns = Array.from(
+    document.querySelectorAll<HTMLButtonElement>('.accent-sw'),
+  );
+
+  function sync(id: string) {
+    for (const b of btns) {
+      b.setAttribute('aria-pressed', String(b.dataset.accent === id));
+    }
+  }
+
+  // Reflect the accent the inline script already applied at first paint.
+  sync(window.__ui?.getAccentId?.() ?? 'vermilion');
+
+  for (const b of btns) {
+    b.addEventListener('click', () => {
+      const id = b.dataset.accent;
+      if (!id) return;
+      window.__ui.setAccent(id);
+      sync(id);
+    });
+  }
+
+  document.addEventListener('accentchange', (e) => sync(e.detail.accent));
+</script>

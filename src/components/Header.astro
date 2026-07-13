@@ -1,4 +1,5 @@
 ---
+import AccentPicker from './AccentPicker.astro';
 import Seal from './Seal.astro';
 import ThemeToggle from './ThemeToggle.astro';
 ---
@@ -15,7 +16,10 @@ import ThemeToggle from './ThemeToggle.astro';
         <li><a href="/playground">playground</a></li>
         <li><a href="/blog">blog</a></li>
       </ul>
-      <ThemeToggle />
+      <div class="controls">
+        <AccentPicker />
+        <ThemeToggle />
+      </div>
     </nav>
   </div>
 </header>
@@ -34,6 +38,11 @@ import ThemeToggle from './ThemeToggle.astro';
     align-items: center;
     justify-content: space-between;
     height: 68px;
+  }
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
   }
   .brand {
     display: flex;
