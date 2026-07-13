@@ -1,26 +1,26 @@
 ---
 import { urlFor } from '../../content/imageUrl';
+import { sanityConfigured } from '../../content/client';
 
 interface Props {
   photo?: { asset: object; alt: string };
 }
 const { photo } = Astro.props;
-const src = photo ? urlFor(photo.asset).width(640).height(640).fit('crop').url() : null;
+// When Sanity is not configured (fixture builds), use the local profile photo
+// instead of the generic placeholder builder.
+const src = sanityConfigured && photo
+  ? urlFor(photo.asset).width(640).height(640).fit('crop').url()
+  : '/images/caio-profile.png';
+const alt = photo?.alt ?? 'Caio Alfonso';
 ---
 <div class="hero-photo fade-up delay-2">
-  {src && photo
-    ? <img src={src} alt={photo.alt} width="320" height="320" loading="eager" />
-    : <span class="photo-hint">profile photo</span>
-  }
-  <div class="seal-corner" aria-hidden="true">
-    <span class="seal seal-sm">カ</span>
-  </div>
+  <img src={src} alt={alt} width="400" height="500" loading="eager" />
 </div>
 
 <style>
   .hero-photo {
     position: relative;
-    aspect-ratio: 1;
+    aspect-ratio: 4 / 5;
     border: 1px solid var(--line);
     background: var(--surface-sunk);
     display: flex;
@@ -32,18 +32,6 @@ const src = photo ? urlFor(photo.asset).width(640).height(640).fit('crop').url()
     height: 100%;
     object-fit: cover;
     display: block;
-  }
-  .photo-hint {
-    font-family: var(--font-mono);
-    font-size: .68rem;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--ink-muted);
-  }
-  .seal-corner {
-    position: absolute;
-    bottom: 14px;
-    right: 14px;
   }
   @media (max-width: 760px) {
     .hero-photo {
