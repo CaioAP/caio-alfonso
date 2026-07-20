@@ -39,10 +39,9 @@ const ogUrl = ogImage ?? new URL('/og/default.png', Astro.site).toString();
 
   <link rel="alternate" type="application/rss+xml" title="Caio | Frontend Blog" href={new URL('/rss.xml', Astro.site)} />
 
-  <!-- Fonts (replace with self-hosted woff2 in production) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Fonts: self-hosted subsetted woff2, declared in global.css -->
+  <link rel="preload" href="/fonts/zen-old-mincho-700.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/zen-kaku-gothic-new-400.woff2" as="font" type="font/woff2" crossorigin />
 
   <!-- Favicon -->
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
