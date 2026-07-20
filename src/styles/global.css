@@ -315,6 +315,12 @@ h3 {
 .prose a {
   color: var(--shu-strong);
 }
+.prose ul {
+  list-style: disc;
+}
+.prose ol {
+  list-style: decimal;
+}
 .prose ul,
 .prose ol {
   margin-top: 1.2rem;

@@ -2,12 +2,17 @@
 import { PortableText } from 'astro-portabletext';
 import Prose from '../components/Prose.astro';
 import Seal from '../components/Seal.astro';
+import { sanityConfigured } from '../content/client';
 import { urlFor } from '../content/imageUrl';
 import { getProfile } from '../content/queries';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const profile = await getProfile();
-const photoSrc = urlFor(profile.photo.asset).width(480).height(480).fit('crop').url();
+// When Sanity is not configured (fixture builds), use the local profile photo
+// instead of the generic placeholder builder.
+const photoSrc = sanityConfigured
+  ? urlFor(profile.photo.asset).width(640).height(640).fit('crop').url()
+  : '/images/caio-profile.png';
 
 const schema = {
   '@context': 'https://schema.org',
@@ -64,8 +69,8 @@ const schema = {
         <img
           src={photoSrc}
           alt={profile.photo.alt}
-          width="480"
-          height="480"
+          width="400"
+          height="500"
           loading="eager"
         />
         <div class="photo-seal" aria-hidden="true">
@@ -138,11 +143,14 @@ const schema = {
 
   .about-photo {
     position: relative;
+    aspect-ratio: 4 / 5;
     border: 1px solid var(--line);
+    background: var(--surface-sunk);
   }
   .about-photo img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     display: block;
   }
   .photo-seal {
