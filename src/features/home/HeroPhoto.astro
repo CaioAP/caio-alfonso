@@ -1,6 +1,6 @@
 ---
-import { urlFor } from '../../content/imageUrl';
 import { sanityConfigured } from '../../content/client';
+import { urlFor } from '../../content/imageUrl';
 
 interface Props {
   photo?: { asset: object; alt: string };
@@ -8,9 +8,10 @@ interface Props {
 const { photo } = Astro.props;
 // When Sanity is not configured (fixture builds), use the local profile photo
 // instead of the generic placeholder builder.
-const src = sanityConfigured && photo
-  ? urlFor(photo.asset).width(640).height(640).fit('crop').url()
-  : '/images/caio-profile.png';
+const src =
+  sanityConfigured && photo
+    ? urlFor(photo.asset).width(640).height(640).fit('crop').url()
+    : '/images/caio-profile.png';
 const alt = photo?.alt ?? 'Caio Alfonso';
 ---
 <div class="hero-photo fade-up delay-2">
