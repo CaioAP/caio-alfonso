@@ -52,7 +52,8 @@ export const profile = defineType({
   fields: [
     defineField({ name: 'name',            type: 'string',        title: 'Name' }),
     defineField({ name: 'headline',        type: 'string',        title: 'Headline' }),
-    defineField({ name: 'bio',             type: 'array', of: [{ type: 'block' }], title: 'Bio' }),
+    defineField({ name: 'bioShort',         type: 'text',          title: 'Bio (short, home page)' }),
+    defineField({ name: 'bio',             type: 'array', of: [{ type: 'block' }], title: 'Bio (full, about page)' }),
     defineField({ name: 'location',        type: 'string',        title: 'Location' }),
     defineField({ name: 'email',           type: 'string',        title: 'Email' }),
     defineField({ name: 'socials',         type: 'array',         title: 'Socials',
@@ -135,6 +136,7 @@ export const experience = defineType({
     defineField({ name: 'end',        type: 'date' }),   // null = Present
     defineField({ name: 'location',   type: 'string' }),
     defineField({ name: 'highlights', type: 'array', of: [{ type: 'string' }] }),
+    defineField({ name: 'stack',      type: 'array', of: [{ type: 'string' }] }),
     defineField({ name: 'order',      type: 'number' }),
   ],
 });
@@ -238,12 +240,14 @@ export const ExperienceSchema = z.object({
   end:        z.string().optional(),
   location:   z.string().optional(),
   highlights: z.array(z.string()).default([]),
+  stack:      z.array(z.string()).default([]),
   order:      z.number().default(0),
 });
 
 export const ProfileSchema = z.object({
   name:            z.string(),
   headline:        z.string(),
+  bioShort:        z.string(),
   bio:             z.array(z.unknown()),
   location:        z.string(),
   email:           z.string().email(),

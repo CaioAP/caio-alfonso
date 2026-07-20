@@ -7,7 +7,13 @@ export const profile = defineType({
   fields: [
     defineField({ name: 'name', type: 'string', title: 'Name' }),
     defineField({ name: 'headline', type: 'string', title: 'Headline' }),
-    defineField({ name: 'bio', type: 'array', of: [{ type: 'block' }], title: 'Bio' }),
+    defineField({ name: 'bioShort', type: 'text', title: 'Bio (short, home page)' }),
+    defineField({
+      name: 'bio',
+      type: 'array',
+      of: [{ type: 'block' }],
+      title: 'Bio (full, about page)',
+    }),
     defineField({ name: 'location', type: 'string', title: 'Location' }),
     defineField({ name: 'email', type: 'string', title: 'Email' }),
     defineField({

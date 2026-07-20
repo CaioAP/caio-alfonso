@@ -61,12 +61,14 @@ export const ExperienceSchema = z.object({
     .transform((v) => v ?? undefined),
   location: z.string().optional(),
   highlights: z.array(z.string()).default([]),
+  stack: z.array(z.string()).default([]),
   order: z.number().default(0),
 });
 
 export const ProfileSchema = z.object({
   name: z.string(),
   headline: z.string(),
+  bioShort: z.string(),
   bio: portableTextSchema,
   location: z.string(),
   email: z.email(),
