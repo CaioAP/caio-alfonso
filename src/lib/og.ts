@@ -3,7 +3,9 @@ import path from 'node:path';
 import { Resvg } from '@resvg/resvg-js';
 import satori from 'satori';
 
-const font = fs.readFileSync(path.join(process.cwd(), 'public/fonts/ZenKakuGothicNew-Regular.ttf'));
+const font = fs.readFileSync(
+  path.join(process.cwd(), 'src/assets/fonts/ZenKakuGothicNew-Regular.ttf'),
+);
 
 /** Renders the shared OG card (1200×630, washi palette, seal mark) to PNG. */
 type SatoriElement = Parameters<typeof satori>[0];
