@@ -146,9 +146,9 @@ const src = photo ? urlFor(photo.asset).width(640).height(640).fit('crop').url()
 <section class="band" id="about">
   <div class="wrap">
     <p class="eyebrow">About</p>
-    <h2>{/* pull first sentence from bio or use a fixed tagline */}</h2>
+    <h2>{/* fixed tagline */}</h2>
     <div class="about-body">
-      <PortableText value={profile.bio} />
+      <p>{profile.bioShort}</p>
     </div>
     <!-- Token demo tease (playground teaser) -->
     <div class="token-swatch-row" aria-label="Accent color demo — tokens are live">

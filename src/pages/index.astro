@@ -1,7 +1,6 @@
 ---
-import { PortableText } from 'astro-portabletext';
 import Seal from '../components/Seal.astro';
-import { getPosts, getProfile, getProjects } from '../content/queries';
+import { getExperiences, getPosts, getProfile, getProjects } from '../content/queries';
 import PostRow from '../features/blog/PostRow.astro';
 import HeroPhoto from '../features/home/HeroPhoto.astro';
 import ProjectCard from '../features/work/ProjectCard.astro';
@@ -10,6 +9,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const profile = await getProfile();
 const projects = (await getProjects()).filter((p) => p.featured).slice(0, 3);
 const posts = (await getPosts()).slice(0, 5);
+const experiences = await getExperiences();
 
 const schema = {
   '@context': 'https://schema.org',
@@ -37,8 +37,8 @@ const schema = {
       </div>
       <h1 class="fade-up delay-1">{profile.headline}</h1>
       <p class="hero-lead fade-up delay-2">
-        Usability-first interfaces, token-driven design systems, and the
-        architecture underneath them, built in the open.
+        Usability-first interfaces, token-driven design systems and the
+        architecture underneath them, built with care.
       </p>
       <div class="cta fade-up delay-2">
         <a class="btn btn-fill" href="/playground">See the work</a>
@@ -61,11 +61,40 @@ const schema = {
   <section class="band" id="about">
     <div class="wrap">
       <p class="eyebrow">About</p>
-      <h2 class="h2lead">Interfaces are systems. I build both.</h2>
+      <h2 class="h2lead">Eight years of frontend, most of it in fintech.</h2>
       <div class="about-body">
-        <PortableText value={profile.bio} />
+        <p>{profile.bioShort}</p>
       </div>
       <a class="link" href="/about">More about me →</a>
+    </div>
+  </section>
+
+  <!-- Experience (resumed) -->
+  <section class="band" id="experience" style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow">Experience</p>
+      <h2 class="h2lead">Eight years, four companies.</h2>
+      <div class="exp-list">
+        {experiences.map((e) => {
+          const end = e.end ? new Date(e.end).getFullYear().toString() : 'Present';
+          const start = new Date(e.start).getFullYear();
+          return (
+            <div class="exp-row">
+              <div class="exp-date mono">{start}–{end}</div>
+              <div class="exp-body">
+                <div class="exp-role">{e.role} · {e.company}</div>
+                {e.highlights[0] && <p class="exp-highlight">{e.highlights[0]}</p>}
+                {e.stack.length > 0 && (
+                  <div class="exp-stack">
+                    {e.stack.slice(0, 5).map((s) => <span class="chip">{s}</span>)}
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <a class="link" href="/work">Full experience &amp; timeline →</a>
     </div>
   </section>
 
@@ -152,6 +181,45 @@ const schema = {
   @media (max-width: 900px) {
     .about-body {
       max-width: 100%;
+    }
+  }
+
+  .exp-list {
+    margin-top: 2.2rem;
+    margin-bottom: 1.8rem;
+    border-top: 1px solid var(--line);
+  }
+  .exp-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1.4rem;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .exp-date {
+    color: var(--ink-muted);
+    padding-top: .2rem;
+  }
+  .exp-role {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .exp-highlight {
+    color: var(--ink-muted);
+    font-size: .92rem;
+    margin: .5rem 0 0;
+  }
+  .exp-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin-top: .7rem;
+  }
+  @media (max-width: 560px) {
+    .exp-row {
+      grid-template-columns: 1fr;
+      gap: .3rem;
     }
   }
 
