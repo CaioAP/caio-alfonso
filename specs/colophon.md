@@ -24,7 +24,7 @@ const stack = [
   { label: 'perf',    value: '~0 KB JS on content pages · Lighthouse ≥ 95' },
   { label: 'a11y',    value: 'WCAG 2.2 AA · axe clean · skip link · visible focus' },
   { label: 'type',    value: 'Zen Old Mincho · Zen Kaku Gothic New · JetBrains Mono' },
-  { label: 'source',  value: 'github.com/caio/portfolio (replace with real URL)' },
+  { label: 'source',  value: 'github.com/CaioAP/caio-alfonso' },
 ];
 ---
 <BaseLayout
