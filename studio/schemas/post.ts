@@ -31,7 +31,30 @@ export const post = defineType({
     defineField({
       name: 'body',
       type: 'array',
-      of: [{ type: 'block' }, { type: 'image' }, { type: 'code' }],
+      of: [
+        {
+          type: 'block',
+          // The page renders `title` as the h1, so the body starts at h2.
+          // Offering h1 here produces two h1s on the page.
+          styles: [
+            { title: 'Normal', value: 'normal' },
+            { title: 'Heading 2', value: 'h2' },
+            { title: 'Heading 3', value: 'h3' },
+            { title: 'Heading 4', value: 'h4' },
+            { title: 'Quote', value: 'blockquote' },
+          ],
+        },
+        // Inline images need alt text for the same a11y reasons as the cover.
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            { name: 'alt', type: 'string', validation: (r) => r.required() },
+            { name: 'caption', type: 'string' },
+          ],
+        },
+        { type: 'code' },
+      ],
     }),
     defineField({ name: 'draft', type: 'boolean', initialValue: true }),
   ],
