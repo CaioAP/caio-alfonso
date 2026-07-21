@@ -1,6 +1,7 @@
 ---
 import { PortableText } from 'astro-portabletext';
 import Prose from '../../components/Prose.astro';
+import { urlFor } from '../../content/imageUrl';
 import { getPost, getPosts } from '../../content/queries';
 import CodeBlock from '../../features/blog/CodeBlock.astro';
 import ImageBlock from '../../features/blog/ImageBlock.astro';
@@ -21,6 +22,9 @@ const published = new Date(post.publishedAt).toLocaleDateString('en-US', {
   month: 'long',
   day: 'numeric',
 });
+
+// 16:9 crop keeps a predictable box whatever the uploaded aspect ratio is.
+const coverSrc = post.cover ? urlFor(post.cover.asset).width(1600).height(900).fit('crop').url() : null;
 
 const schema = {
   '@context': 'https://schema.org',
@@ -45,6 +49,17 @@ const schema = {
         <h1>{post.title}</h1>
         <p class="excerpt">{post.excerpt}</p>
       </header>
+      {coverSrc && post.cover && (
+        <img
+          class="cover"
+          src={coverSrc}
+          alt={post.cover.alt}
+          width="1600"
+          height="900"
+          loading="eager"
+          decoding="async"
+        />
+      )}
       <Prose>
         <PortableText
           value={post.body}
@@ -72,6 +87,12 @@ const schema = {
     max-width: 52ch;
     margin-top: 1rem;
     margin-bottom: 2.4rem;
+  }
+  .cover {
+    width: 100%;
+    height: auto;
+    margin-bottom: 2.8rem;
+    border: 1px solid var(--line);
   }
   .eyebrow a {
     color: var(--shu-strong);
