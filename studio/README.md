@@ -2,17 +2,30 @@
 
 Schemas for the portfolio content types: `profile` (singleton), `post`, `project`, `experience`, `series`.
 
-## Setup
+Project ID `ftpb674o`, dataset `production` (private). Both are set in `sanity.config.ts` and
+`sanity.cli.ts` — the projectId is public and ships in the Studio bundle, so it is not a secret and
+needs no `.env` here. Auth is per-machine via `npx sanity login`.
+
+Formatting and linting are owned by the repo-root Biome config, not a Studio-local ESLint/Prettier.
+
+## Local development
 
 ```bash
 cd studio
-npm create sanity@latest -- --project <projectId> --dataset production
-# or, if scaffolding manually:
-npm i sanity @sanity/vision react react-dom styled-components
-npx sanity dev
+npm install
+npm run dev      # sanity dev  → http://localhost:3333
 ```
 
-`sanity.config.ts` and `schemas/` in this directory are the source of truth — drop them into the scaffolded Studio.
+## Deploy the hosted Studio
+
+```bash
+npm run deploy   # sanity deploy → <hostname>.sanity.studio
+```
+
+## Schemas
+
+`schemas/` is the source of truth and is mirrored by Zod schemas in `src/content/schemas.ts` on the
+app side — the Astro build fails on mismatch. Change a field here, change it there too.
 
 ## Webhook → Cloudflare Pages rebuild
 

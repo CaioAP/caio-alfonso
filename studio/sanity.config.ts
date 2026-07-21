@@ -6,7 +6,8 @@ import { schemas } from './schemas';
 export default defineConfig({
   name: 'caio-portfolio',
   title: 'Caio Portfolio',
-  projectId: process.env.SANITY_STUDIO_PROJECT_ID!,
+  // projectId is public — it ships in the Studio client bundle. Not a secret.
+  projectId: 'ftpb674o',
   dataset: 'production',
   plugins: [structureTool(), visionTool()],
   schema: { types: schemas },
