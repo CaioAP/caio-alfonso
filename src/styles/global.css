@@ -94,6 +94,8 @@
   --text-step-3: clamp(1.7rem, 1.48rem + 0.95vw, 2.25rem);
   --text-step-4: clamp(2.05rem, 1.7rem + 1.5vw, 2.95rem);
   --text-step-5: clamp(2.5rem, 1.95rem + 2.4vw, 4rem);
+  /* Long-form reading size: a step above UI body text, below the lede. */
+  --text-prose: clamp(1.06rem, 1rem + 0.3vw, 1.19rem);
 }
 
 /* ── Light: Washi ── */
@@ -143,7 +145,10 @@ body {
 }
 h1,
 h2,
-h3 {
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display);
   line-height: 1.18;
 }
@@ -358,11 +363,30 @@ h3 {
   max-width: 68ch;
   color: var(--ink);
   line-height: 1.75;
+  font-size: var(--text-prose);
 }
+/*
+ * Preflight resets headings to inherit both size and weight, and prose comes
+ * from Portable Text as bare <h2>/<h3>/<h4> with no helper class to restore
+ * them. Without these rules every heading renders at body size and weight.
+ */
 .prose h2,
+.prose h3,
+.prose h4 {
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+.prose h2 {
+  font-size: var(--text-step-2);
+  margin-top: 3rem;
+}
 .prose h3 {
+  font-size: var(--text-step-1);
   margin-top: 2.4rem;
-  margin-bottom: 0.8rem;
+}
+.prose h4 {
+  font-size: var(--text-step-0);
+  margin-top: 2rem;
 }
 .prose p {
   margin-top: 1.2rem;
