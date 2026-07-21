@@ -410,8 +410,26 @@ h6 {
   background: transparent;
   padding: 0;
 }
+/*
+ * Links inside a text block must be distinguishable without relying on colour
+ * (WCAG 1.4.1), so the hairline underline is always present and only deepens on
+ * interaction — the "ink text + vermilion hairline" rule in docs/03 §6.
+ */
 .prose a {
   color: var(--shu-strong);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--shu) 50%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+.prose a:hover,
+.prose a:focus-visible {
+  text-decoration-color: var(--shu);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .prose a {
+    transition: text-decoration-color 140ms var(--ease-out);
+  }
 }
 .prose ul {
   list-style: disc;

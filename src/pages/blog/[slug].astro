@@ -96,8 +96,16 @@ const schema = {
     margin-bottom: 2.8rem;
     border: 1px solid var(--line);
   }
+  /* Sits inside a run of text, so it needs more than colour to read as a link. */
   .eyebrow a {
     color: var(--shu-strong);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in oklch, var(--shu) 50%, transparent);
+    text-underline-offset: 0.18em;
+  }
+  .eyebrow a:hover,
+  .eyebrow a:focus-visible {
+    text-decoration-color: var(--shu);
   }
   .post-footer {
     display: flex;
