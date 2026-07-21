@@ -1,0 +1,55 @@
+---
+import { urlFor } from '../../content/imageUrl';
+
+/** Inline `image` node inside a Portable Text body. */
+interface ImageNode {
+  _type: 'image';
+  asset?: { _ref: string };
+  alt?: string;
+  caption?: string;
+}
+
+const { node } = Astro.props as { node: ImageNode };
+
+/**
+ * Sanity asset refs encode intrinsic dimensions: image-<hash>-<w>x<h>-<ext>.
+ * Emitting width/height reserves layout space and avoids the CLS hit that
+ * would cost us the Lighthouse floor.
+ */
+function dimensions(ref: string | undefined) {
+  const match = ref?.match(/-(\d+)x(\d+)-/);
+  if (!match?.[1] || !match[2]) return null;
+  return { width: Number(match[1]), height: Number(match[2]) };
+}
+
+const src = node.asset ? urlFor(node.asset).width(1200).fit('max').url() : null;
+const dims = dimensions(node.asset?._ref);
+---
+{src && (
+  <figure class="body-image">
+    <img
+      src={src}
+      alt={node.alt ?? ''}
+      width={dims?.width}
+      height={dims?.height}
+      loading="lazy"
+      decoding="async"
+    />
+    {node.caption && <figcaption>{node.caption}</figcaption>}
+  </figure>
+)}
+
+<style is:global>
+  .prose .body-image {
+    margin-top: 1.8rem;
+  }
+  .prose .body-image img {
+    width: 100%;
+    height: auto;
+  }
+  .prose .body-image figcaption {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    margin-top: 0.6rem;
+  }
+</style>

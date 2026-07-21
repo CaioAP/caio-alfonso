@@ -2,6 +2,8 @@
 import { PortableText } from 'astro-portabletext';
 import Prose from '../../components/Prose.astro';
 import { getPost, getPosts } from '../../content/queries';
+import CodeBlock from '../../features/blog/CodeBlock.astro';
+import ImageBlock from '../../features/blog/ImageBlock.astro';
 import { readingTime } from '../../features/blog/ReadingTime';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
@@ -44,7 +46,10 @@ const schema = {
         <p class="excerpt">{post.excerpt}</p>
       </header>
       <Prose>
-        <PortableText value={post.body} />
+        <PortableText
+          value={post.body}
+          components={{ type: { code: CodeBlock, image: ImageBlock } }}
+        />
       </Prose>
       {post.tags.length > 0 && (
         <footer class="post-footer">

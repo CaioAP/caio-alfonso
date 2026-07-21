@@ -1,0 +1,89 @@
+---
+import { Code } from 'astro:components';
+
+/** Shape emitted by Sanity's @sanity/code-input plugin. */
+interface CodeNode {
+  _type: 'code';
+  code?: string;
+  language?: string;
+  filename?: string;
+}
+
+/**
+ * Languages we highlight. Astro's <Code> throws at build time on a language
+ * Shiki cannot load, so an unknown value from the Studio must fall back rather
+ * than take the build down. Add entries here as the blog needs them.
+ */
+const LANGUAGES = [
+  'astro',
+  'bash',
+  'css',
+  'diff',
+  'html',
+  'js',
+  'javascript',
+  'json',
+  'jsx',
+  'markdown',
+  'md',
+  'sh',
+  'shell',
+  'sql',
+  'svelte',
+  'ts',
+  'tsx',
+  'typescript',
+  'vue',
+  'yaml',
+] as const;
+
+type Language = (typeof LANGUAGES)[number];
+
+function toLanguage(value: string | undefined): Language | 'text' {
+  return LANGUAGES.includes(value as Language) ? (value as Language) : 'text';
+}
+
+const { node } = Astro.props as { node: CodeNode };
+const lang = toLanguage(node.language);
+---
+{node.code && (
+  <figure class="code-block">
+    {node.filename && <figcaption class="mono">{node.filename}</figcaption>}
+    <Code
+      code={node.code}
+      lang={lang}
+      themes={{ light: 'github-light', dark: 'github-dark' }}
+      defaultColor={false}
+    />
+  </figure>
+)}
+
+<style is:global>
+  /*
+   * defaultColor:false makes Shiki emit --shiki-light/--shiki-dark custom
+   * properties instead of a hardcoded colour, so the theme can follow
+   * data-theme. The background stays on the site's own token rather than
+   * Shiki's, keeping code blocks inside the washi/sumi palette.
+   */
+  .prose .code-block {
+    margin-top: 1.4rem;
+  }
+  .prose .code-block figcaption {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+    padding-bottom: 0.5rem;
+  }
+  .prose .code-block pre.astro-code {
+    background: var(--surface-sunk) !important;
+    margin-top: 0;
+  }
+  .prose .code-block .astro-code,
+  .prose .code-block .astro-code span {
+    color: var(--shiki-light);
+  }
+  [data-theme='dark'] .prose .code-block .astro-code,
+  [data-theme='dark'] .prose .code-block .astro-code span {
+    color: var(--shiki-dark);
+  }
+</style>

@@ -221,6 +221,22 @@ export const fixturePosts = [
         'po1b3',
         'Model the quartet as a discriminated union and impossible states stop compiling. The States Quartet demo in the Playground shows the pattern live.',
       ),
+      // Exercises the CodeBlock renderer. Real Sanity has no posts yet, so
+      // fixture builds are the only thing that runs this path — keep it.
+      {
+        _type: 'code',
+        _key: 'po1code',
+        language: 'ts',
+        filename: 'async-state.ts',
+        code: [
+          'type AsyncState<T> =',
+          "  | { status: 'loading' }",
+          "  | { status: 'empty' }",
+          "  | { status: 'error'; error: Error }",
+          "  | { status: 'success'; data: T };",
+        ].join('\n'),
+      },
+      block('po1b4', 'Render each arm explicitly and the compiler refuses to let you forget one.'),
     ],
     draft: false,
   },
@@ -242,6 +258,15 @@ export const fixturePosts = [
         'po2b2',
         'None of this happens by default. It is a design decision, and skipping it means keyboard and screen-reader users lose their place in your interface.',
       ),
+      // Exercises the ImageBlock renderer, including intrinsic-size parsing
+      // from the asset ref. Same reasoning as the code node above.
+      {
+        _type: 'image',
+        _key: 'po2img',
+        asset: { _ref: 'image-fixturefocusring0000000000000000000-1600x900-png' },
+        alt: 'A focus ring resting on the button that opened a dialog.',
+        caption: 'Focus returning to its trigger after the dialog closes.',
+      },
     ],
     draft: false,
   },
