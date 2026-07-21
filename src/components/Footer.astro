@@ -1,3 +1,9 @@
+---
+import { getProfile } from '../content/queries';
+
+const profile = await getProfile();
+const cvUrl = profile.cv?.asset.url;
+---
 <footer class="site-footer">
   <div class="wrap">
     <div class="footer-row">
@@ -6,7 +12,7 @@
         <a href="https://github.com/CaioAP" class="link" target="_blank" rel="noopener">GitHub</a>
         <a href="https://www.linkedin.com/in/caio-alfonso-597b8196/" class="link" target="_blank" rel="noopener">LinkedIn</a>
         <a href="/rss.xml" class="link">RSS</a>
-        <a href="/cv.pdf" class="link" download>CV ↓</a>
+        {cvUrl && <a href={cvUrl} class="link" download>CV ↓</a>}
       </nav>
     </div>
   </div>
