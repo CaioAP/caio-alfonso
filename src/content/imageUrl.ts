@@ -1,4 +1,4 @@
-import imageUrlBuilder from '@sanity/image-url';
+import { createImageUrlBuilder } from '@sanity/image-url';
 import { sanity, sanityConfigured } from './client';
 
 interface ImageBuilderLike {
@@ -16,7 +16,7 @@ const placeholderBuilder: ImageBuilderLike = {
   url: () => '/images/placeholder.svg',
 };
 
-const builder = sanityConfigured && sanity ? imageUrlBuilder(sanity) : null;
+const builder = sanityConfigured && sanity ? createImageUrlBuilder(sanity) : null;
 
 export function urlFor(source: object): ImageBuilderLike {
   if (!builder) return placeholderBuilder;
