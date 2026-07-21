@@ -119,7 +119,9 @@ export async function getProfile(): Promise<Profile> {
     warnFixtures();
     return validate(ProfileSchema, fixtureProfile);
   }
-  const data = await client().fetch(`*[_type == "profile"][0]`);
+  // `cv` is a file, not an image: it has no _ref-based URL builder, so the
+  // asset must be dereferenced here to get a usable download URL.
+  const data = await client().fetch(`*[_type == "profile"][0]{ ..., cv{ asset->{ url } } }`);
   if (!data) throw new Error('Profile document missing in Sanity');
   return validate(ProfileSchema, data);
 }

@@ -73,7 +73,11 @@ export const ProfileSchema = z.object({
   location: z.string(),
   email: z.email(),
   socials: z.array(z.object({ label: z.string(), url: z.url() })).default([]),
-  cv: z.object({ asset: z.object({ url: z.string() }) }).optional(),
+  // Projected as `cv{asset->{url}}`; GROQ yields null (not undefined) when unset.
+  cv: z
+    .object({ asset: z.object({ url: z.string() }) })
+    .nullish()
+    .transform((v) => v ?? undefined),
   availableForWork: z.boolean().default(false),
   photo: imageSchema,
 });
