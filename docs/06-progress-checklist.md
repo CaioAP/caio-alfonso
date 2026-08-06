@@ -2,7 +2,7 @@
 
 Living status doc. Update as items land.
 
-**Live:** https://caio-alfonso.pages.dev · **Studio:** https://caio-alfonso.sanity.studio
+**Live:** https://caioalfonso.dev · **Studio:** https://caio-alfonso.sanity.studio
 **Sanity:** project `ftpb674o`, dataset `production` (private)
 
 ## Foundations
