@@ -1,5 +1,43 @@
 ---
 import { Code } from 'astro:components';
+import githubLightHighContrast from 'shiki/themes/github-light-high-contrast.mjs';
+
+/**
+ * The light theme, with its comment colour darkened.
+ *
+ * Shiki themes are authored against their own background — this one declares
+ * #ffffff — and the block below repaints that with --surface-sunk to keep code
+ * inside the site's palette. Every token then has less contrast than its author
+ * measured. `github-light` failed outright that way; `github-light-high-contrast`
+ * clears everything except comments, which land at 4.35:1 on #f1eeea against a
+ * 4.5:1 requirement. Close, and still a failure.
+ *
+ * #5f6974 measures 4.83:1 on that background, so it keeps a real margin rather
+ * than sitting on the line. Exactly one entry in the theme carries the old
+ * value, and it is the comment scope.
+ */
+const lightTheme = {
+  ...githubLightHighContrast,
+  tokenColors: (githubLightHighContrast.tokenColors ?? []).map((token) =>
+    token.settings?.foreground === '#66707b'
+      ? { ...token, settings: { ...token.settings, foreground: '#5f6974' } }
+      : token,
+  ),
+};
+
+/**
+ * Why `tabindex="0"` is set on the <Code> block below.
+ *
+ * `.prose pre` is overflow-x: auto, so any block wider than the column becomes
+ * a scrollable region — and a scrollable region with no way to focus it cannot
+ * be reached by keyboard at all (WCAG 2.1.1). axe reports it as
+ * scrollable-region-focusable.
+ *
+ * Whether a given block overflows depends on the viewport, so this cannot be
+ * solved by keeping lines short: at 360px essentially any real sample overflows.
+ * Hence a structural fix. The cost is one tab stop per code block, which is the
+ * right trade against content reachable only by pointer.
+ */
 
 /** Shape emitted by Sanity's @sanity/code-input plugin. */
 interface CodeNode {
@@ -52,8 +90,9 @@ const lang = toLanguage(node.language);
     <Code
       code={node.code}
       lang={lang}
-      themes={{ light: 'github-light', dark: 'github-dark' }}
+      themes={{ light: lightTheme, dark: 'github-dark-high-contrast' }}
       defaultColor={false}
+      tabindex="0"
     />
   </figure>
 )}
@@ -64,14 +103,27 @@ const lang = toLanguage(node.language);
    * properties instead of a hardcoded colour, so the theme can follow
    * data-theme. The background stays on the site's own token rather than
    * Shiki's, keeping code blocks inside the washi/sumi palette.
+   *
+   * That last decision is why the themes above are the *high-contrast*
+   * variants. Shiki's plain `github-light` is tuned against #ffffff, where its
+   * muted comment colour scrapes 4.54:1 — barely over the line. Repainting the
+   * background with --surface-sunk, a warm off-white, dropped the same pair to
+   * 4.16:1 and the keyword red to 3.95:1, both failures at body size. Keeping
+   * the palette therefore means paying for it with a higher-contrast theme.
+   * Verified with axe, not by eye; see tests/smoke.spec.ts.
    */
   .prose .code-block {
     margin-top: 1.4rem;
   }
+  /*
+   * --ink-muted, not --ink-faint. This caption renders at 12px, which is
+   * ordinary body text as far as WCAG is concerned, so it needs 4.5:1 rather
+   * than the 3:1 that large text gets. --ink-faint measured 2.87:1 here.
+   */
   .prose .code-block figcaption {
     font-family: var(--font-mono);
     font-size: 0.75rem;
-    color: var(--ink-faint);
+    color: var(--ink-muted);
     padding-bottom: 0.5rem;
   }
   .prose .code-block pre.astro-code {

@@ -68,6 +68,71 @@ test('blog post page renders article content', async ({ page }) => {
   await expect(page.locator('article header h1')).toBeVisible();
 });
 
+/**
+ * Code blocks, on every post that has any.
+ *
+ * The key routes above never reach these. `/blog` is a list of links, and the
+ * one post route they do cover is whichever happens to be first — so the code
+ * path went unscanned until the first post with a code sample, and then failed
+ * immediately: Shiki's `github-light` is tuned against #ffffff, and this site
+ * repaints the background with --surface-sunk. Ten serious contrast violations,
+ * none of which any existing test could see.
+ *
+ * Deliberately not pinned to a slug. Content moves; the assertion should hold
+ * for whatever is published rather than for one post someone can rename.
+ */
+test('code blocks on every post pass axe in both themes', async ({ page }) => {
+  await page.goto('/blog');
+  const hrefs = await page
+    .locator('.post-row')
+    .evaluateAll((rows) =>
+      rows.map((r) => (r as HTMLAnchorElement).href ?? r.querySelector('a')?.href).filter(Boolean),
+    );
+  expect(hrefs.length, 'no posts found to scan').toBeGreaterThan(0);
+
+  let codeBlocksSeen = 0;
+
+  for (const href of hrefs) {
+    // Narrow, because that is where a code block starts overflowing and where
+    // scrollable-region-focusable has anything to report at all.
+    await page.setViewportSize({ width: 360, height: 900 });
+    await page.goto(href);
+    await settled(page);
+
+    const blocks = await page.locator('.prose pre').count();
+    if (blocks === 0) continue;
+    codeBlocksSeen += blocks;
+
+    // A scrollable region with no way to focus it is unreachable by keyboard.
+    const unreachable = await page.evaluate(() =>
+      [...document.querySelectorAll('.prose pre')]
+        .filter((pre) => pre.scrollWidth > pre.clientWidth)
+        .filter((pre) => pre.getAttribute('tabindex') === null)
+        .map((pre) => (pre.textContent ?? '').slice(0, 60)),
+    );
+    expect(unreachable, `unfocusable scrollable code blocks on ${href}`).toEqual([]);
+
+    // Contrast is computed from painted pixels, so one theme is half a test.
+    for (const theme of ['light', 'dark'] as const) {
+      await page.evaluate((t) => {
+        document.documentElement.dataset.theme = t;
+      }, theme);
+
+      const results = await new AxeBuilder({ page })
+        .include('.prose')
+        .withTags(['wcag2a', 'wcag2aa', 'wcag22aa'])
+        .analyze();
+      expect(results.violations, `axe on ${href} in ${theme}`).toEqual([]);
+    }
+  }
+
+  // Skipped rather than passed when there is nothing to look at. A silent pass
+  // asserting nothing is the exact failure mode that let the contrast bug ship;
+  // a skip shows up in the report and says why. Goes green on its own as soon
+  // as any post with a code sample is published.
+  test.skip(codeBlocksSeen === 0, 'no published post contains a code block yet');
+});
+
 test('command palette opens with Ctrl+K and traps focus', async ({ page }) => {
   await page.goto('/playground/command-palette');
   // The Ctrl+K listener is bound in onMounted, so pressing before the island
