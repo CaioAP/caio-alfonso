@@ -1,7 +1,19 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-const KEY_ROUTES = ['/', '/blog', '/work', '/about', '/colophon', '/playground'];
+const KEY_ROUTES = [
+  '/',
+  '/blog',
+  '/work',
+  '/about',
+  '/colophon',
+  '/playground',
+  // The demo pages carry the interactive UI, and /playground itself is only a
+  // list of links to them — scanning the index alone scans none of it. This one
+  // adds a radio group and an iframe, and axe cannot see across the frame
+  // boundary, so what is asserted here is the host page's own chrome.
+  '/playground/kanso-ui',
+];
 
 /**
  * Entry animations start at opacity 0, so scanning mid-flight makes axe measure

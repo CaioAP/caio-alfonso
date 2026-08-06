@@ -11,6 +11,15 @@ export interface Demo {
 
 export const registry: Demo[] = [
   {
+    id: 'kanso-ui',
+    title: 'kanso-ui — headless components',
+    description: 'One accessible core, rendered by Vue and React.',
+    framework: 'Vue ↔ React',
+    howBuilt:
+      "A headless component library where every behaviour — state, keyboard, ARIA, focus management — lives once in a framework-agnostic core, and the Vue and React adapters only bind reactivity and render. The core imports neither framework, not even as a type, and CI fails the build if that stops being true. This page iframes the library docs site's own embed routes, so the portfolio links rather than vendors: no build dependency on the packages, and the content pages keep shipping 0 KB of library JS. Both panels inside the frame are the same core; only the rendering differs.",
+    load: () => import('./kanso-ui/KansoEmbed.vue'),
+  },
+  {
     id: 'token-studio',
     title: 'Design Token Studio',
     description: "Edit this site's tokens live; export the CSS.",

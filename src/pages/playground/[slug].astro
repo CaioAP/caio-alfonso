@@ -2,6 +2,7 @@
 import { getDemo, registry } from '../../features/playground/_registry';
 import ContrastChecker from '../../features/playground/color-contrast/ContrastChecker.vue';
 import CommandPalette from '../../features/playground/command-palette/CommandPalette.vue';
+import KansoEmbed from '../../features/playground/kanso-ui/KansoEmbed.vue';
 import StatesQuartet from '../../features/playground/states-quartet/StatesQuartet.vue';
 import TokenStudio from '../../features/playground/token-studio/TokenStudio';
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -23,6 +24,7 @@ if (!demo) throw new Error(`Demo not found: ${slug}`);
     </header>
 
     <div class="demo-stage wrap" id="demo-stage">
+      {slug === 'kanso-ui' && <KansoEmbed client:load />}
       {slug === 'token-studio' && <TokenStudio client:load />}
       {slug === 'color-contrast' && <ContrastChecker client:load />}
       {slug === 'command-palette' && <CommandPalette client:load />}
