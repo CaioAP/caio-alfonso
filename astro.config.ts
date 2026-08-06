@@ -7,7 +7,7 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   // Drives canonical URLs, OG image URLs, RSS and sitemap entries.
   // Update when a custom domain is wired to the Pages project.
-  site: 'https://caio-alfonso.pages.dev',
+  site: 'https://caioalfonso.dev',
   output: 'static',
   integrations: [vue(), react(), sitemap()],
   vite: {

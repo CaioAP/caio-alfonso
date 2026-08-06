@@ -2,7 +2,7 @@
 /**
  * Live kanso-ui components, iframed from the library's own docs site.
  *
- * The embed routes (kanso-ui.pages.dev/embed/<component>/) exist for exactly
+ * The embed routes (kansoui.caioalfonso.dev/embed/<component>/) exist for exactly
  * this: no nav, no sidebar, transparent background, and a `?theme=` parameter
  * so the frame matches whatever this page is wearing. Nothing is vendored and
  * there is no build dependency on the packages — the portfolio links, it does
@@ -26,7 +26,7 @@ const theme = ref<'light' | 'dark'>('light');
 // The trailing slash is load-bearing: without it the docs site answers 308 and
 // the iframe pays for a redirect on every switch.
 const src = computed(
-  () => `https://kanso-ui.pages.dev/embed/${selected.value}/?theme=${theme.value}`,
+  () => `https://kansoui.caioalfonso.dev/embed/${selected.value}/?theme=${theme.value}`,
 );
 
 const label = computed(

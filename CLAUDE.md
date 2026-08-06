@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Personal portfolio + daily frontend blog for Caio. **Built and deployed** — the site is live, serving real content from Sanity.
 
-- **Live:** https://caio-alfonso.pages.dev (Cloudflare Pages, auto-deploys from `main`)
+- **Live:** https://caioalfonso.dev (Cloudflare Pages, auto-deploys from `main`)
 - **Studio:** https://caio-alfonso.sanity.studio
 - **Sanity:** project `ftpb674o`, dataset `production` (private)
 
@@ -157,7 +157,7 @@ Both misses were fixed after this run and **need re-measuring once deployed**: S
 Re-run with:
 
 ```bash
-CHROME_PATH=/usr/bin/google-chrome npx lighthouse https://caio-alfonso.pages.dev/ \
+CHROME_PATH=/usr/bin/google-chrome npx lighthouse https://caioalfonso.dev/ \
   --preset=desktop --chrome-flags="--headless=new"
 ```
 
